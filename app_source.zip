@@ -1,0 +1,1495 @@
+<!-- Código index.html completo listo para reproducir -->
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>IG Tracker Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root[data-theme="dark"] {
+  --bg:#0a0a0f; --card:#13131a; --card2:#1a1a24;
+  --accent:#c8ff00; --accent2:#ff6b6b; --accent3:#6b8cff;
+  --red:#e8354a; --red-bg:rgba(232,53,74,0.12); --red-border:rgba(232,53,74,0.3);
+  --green:#22c55e; --green-bg:rgba(34,197,94,0.12); --green-border:rgba(34,197,94,0.3);
+  --text:#f0f0f8; --muted:#6b6b8a; --border:#2a2a3a;
+}
+:root[data-theme="light"] {
+  --bg:#f4f4f8; --card:#ffffff; --card2:#eeeef4;
+  --accent:#5a9e00; --accent2:#e03c3c; --accent3:#3a5fd4;
+  --red:#c41230; --red-bg:rgba(196,18,48,0.08); --red-border:rgba(196,18,48,0.25);
+  --green:#16a34a; --green-bg:rgba(22,163,74,0.08); --green-border:rgba(22,163,74,0.25);
+  --text:#0a0a14; --muted:#8888aa; --border:#dddde8;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+body.rtl{direction:rtl;text-align:right}
+body.rtl .step{flex-direction:row-reverse}
+body.rtl .header-right{flex-direction:row-reverse}
+body.rtl .ratio-label{flex-direction:row-reverse}
+body.rtl .section-header{flex-direction:row-reverse}
+body.rtl .search-row{flex-direction:row-reverse}
+body.rtl .user-actions{flex-direction:row-reverse}
+body.rtl .mode-option{flex-direction:row-reverse}
+body.rtl .privacy{flex-direction:row-reverse}
+body.rtl .history-popover{left:auto;right:0}
+/* LANG SELECTOR */
+.lang-btn{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:12px;color:var(--text);cursor:pointer;font-weight:600;display:flex;align-items:center;gap:4px;position:relative}
+.lang-dropdown{display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.3);min-width:140px}
+.lang-dropdown.open{display:block}
+.lang-option{padding:10px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .15s;white-space:nowrap}
+.lang-option:hover,.lang-option.active{background:var(--card2)}
+.lang-option.active{font-weight:700;color:var(--accent)}
+
+/* HEADER */
+.header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo span{color:var(--accent)}
+.header-right{display:flex;gap:8px;align-items:center}
+.theme-btn{background:var(--card2);border:1px solid var(--border);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:transform .2s}
+.theme-btn:active{transform:scale(.9)}
+.version{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--muted)}
+
+/* UPLOAD */
+.hero{padding:28px 20px 16px;text-align:center}
+.hero h1{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:8px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{color:var(--muted);font-size:14px;line-height:1.6}
+.privacy{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:12px 16px;margin:0 20px 16px;display:flex;gap:10px;align-items:center}
+.privacy p{font-size:12px;color:var(--muted);line-height:1.5}
+.privacy p strong{color:var(--text)}
+.steps{padding:0 20px 16px}
+.steps-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.step{display:flex;gap:12px;align-items:flex-start;margin-bottom:9px}
+.step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-family:'Syne',sans-serif;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-t{font-size:13px;color:var(--muted);line-height:1.6}
+.step-t strong{color:var(--text)}
+.upload-section{padding:0 20px 28px}
+.upload-card{background:var(--card);border:2px dashed var(--border);border-radius:20px;padding:32px 20px;text-align:center;transition:all .3s}
+.upload-card.drag-over{border-color:var(--accent);background:rgba(200,255,0,.04)}
+.upload-icon{font-size:44px;display:block;margin-bottom:12px}
+.upload-card h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px}
+.upload-card p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.btn-upload{background:var(--accent);color:#000;border:none;border-radius:14px;padding:14px 32px;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .15s,opacity .15s;-webkit-appearance:none}
+.btn-upload:active{transform:scale(.96);opacity:.9}
+#fileInput{display:none}
+.error-box{display:none;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:14px;padding:14px 16px;margin:0 20px 16px;font-size:13px;color:var(--accent2);line-height:1.6}
+
+/* MODE SELECTOR */
+.mode-selector{padding:0 20px 16px}
+.mode-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.mode-options{display:flex;flex-direction:column;gap:8px}
+.mode-option{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:12px}
+.mode-option.selected{border-color:var(--accent);background:rgba(200,255,0,.06)}
+.mode-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;margin-top:2px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.mode-option.selected .mode-radio{border-color:var(--accent);background:var(--accent)}
+.mode-radio::after{content:'';width:7px;height:7px;border-radius:50%;background:#000;display:none}
+.mode-option.selected .mode-radio::after{display:block}
+.mode-text h4{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:3px}
+.mode-text p{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* LOADING */
+.loading{display:none;text-align:center;padding:60px 20px}
+.spinner{width:44px;height:44px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:var(--muted);font-size:14px}
+
+/* RESULTS */
+.results{display:none;padding:0 20px 60px}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;text-align:center;position:relative;overflow:hidden}
+
+/* "No te siguen" card — deep red */
+.stat-card.danger{background:var(--red-bg);border-color:var(--red-border)}
+.stat-card.danger .stat-num{color:var(--red)}
+.stat-card.danger .stat-label{color:var(--red);opacity:.8}
+.stat-card.danger .stat-arrow{color:var(--red)}
+
+/* "Seguidores" card — green */
+.stat-card.positive{background:var(--green-bg);border-color:var(--green-border)}
+.stat-card.positive .stat-num{color:var(--green)}
+.stat-card.positive .stat-label{color:var(--green);opacity:.8}
+.stat-card.positive .stat-arrow{color:var(--green)}
+
+.stat-num{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;line-height:1;margin-bottom:2px;display:flex;align-items:center;justify-content:center;gap:4px}
+.stat-arrow{font-size:20px;font-weight:900;line-height:1}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+/* RATIO */
+.ratio-bar-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.ratio-bar-wrap.locked{opacity:.5;pointer-events:none;position:relative}
+.ratio-locked-msg{font-size:11px;color:var(--muted);margin-top:8px;text-align:center;font-style:italic}
+.ratio-label{font-size:12px;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+.ratio-label span{font-weight:600;color:var(--text)}
+.ratio-track{background:var(--border);border-radius:8px;height:10px;overflow:hidden}
+.ratio-fill{height:100%;background:var(--accent);border-radius:8px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+
+/* HISTORY */
+.history-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.history-strip::-webkit-scrollbar{display:none}
+.history-chip{flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:11px;color:var(--muted);cursor:pointer;transition:border-color .2s;position:relative}
+.history-chip:active{border-color:var(--accent)}
+.history-chip .hdate{font-weight:700;color:var(--text);display:block;margin-bottom:2px;font-size:12px}
+.history-chip .hdiff{font-size:11px}
+.history-chip .hdiff.lost{color:var(--red)}
+.history-chip .hdiff.gained{color:var(--green)}
+.history-chip .hdiff.neutral{color:var(--muted)}
+
+/* HISTORY POPOVER */
+.history-popover{display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:150;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;min-width:220px;box-shadow:0 8px 32px rgba(0,0,0,.35);animation:fadeUp .18s ease}
+.history-popover.open{display:block}
+.history-popover h5{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:10px;color:var(--text)}
+.popover-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px}
+.popover-row:last-child{border-bottom:none}
+.popover-row span:first-child{color:var(--muted)}
+.popover-row span:last-child{font-weight:700;color:var(--text)}
+.popover-row span.red{color:var(--red)}
+.popover-row span.green{color:var(--green)}
+
+/* BLACKLIST */
+.blacklist-count{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.2);border-radius:8px;padding:4px 10px;font-size:12px;color:var(--accent2);margin-bottom:16px;cursor:pointer}
+
+/* SEARCH + SORT */
+.search-row{display:flex;gap:8px;margin-bottom:12px}
+.search-bar{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);flex:1;outline:none;-webkit-appearance:none;transition:border-color .2s}
+.search-bar:focus{border-color:var(--accent)}
+.search-bar::placeholder{color:var(--muted)}
+.sort-btn{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.sort-btn.active{border-color:var(--accent);color:var(--accent)}
+
+/* TABS */
+.tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:9px 15px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700}
+
+/* LIST */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800}
+.count-pill{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:3px 10px;font-size:12px;color:var(--muted);font-weight:600}
+
+/* PRECISION NOTE */
+.precision-note{display:none;background:rgba(107,140,255,.10);border:1px solid rgba(107,140,255,.25);border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:13px;line-height:1.55;color:var(--text)}
+.precision-note strong{font-weight:700;color:var(--text)}
+.precision-note.show{display:block}
+.user-list{display:flex;flex-direction:column;gap:8px}
+.user-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;animation:fadeUp .22s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:#fff;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.username{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.user-actions{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.btn-ig{background:transparent;border:1px solid var(--border);border-radius:8px;padding:5px 8px;font-size:13px;cursor:pointer;transition:all .2s;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center}
+.btn-ig:active{border-color:var(--accent3);color:var(--accent3)}
+.btn-block{background:transparent;border:1px solid var(--border);border-radius:8px;padding:5px 8px;font-size:12px;cursor:pointer;transition:all .2s;color:var(--muted)}
+.btn-block.blocked{background:rgba(255,107,107,.12);border-color:var(--accent2);color:var(--accent2)}
+.empty{text-align:center;padding:36px 20px;color:var(--muted)}
+.empty span{font-size:36px;display:block;margin-bottom:10px}
+.empty p{font-size:14px}
+
+/* ACTIONS */
+.export-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}
+.btn-export{border-radius:13px;padding:13px 12px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:transform .15s;-webkit-appearance:none;border:1px solid var(--border);background:var(--card2);color:var(--text)}
+.btn-export:active{transform:scale(.97)}
+.btn-action{border-radius:13px;padding:14px 20px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,opacity .15s;-webkit-appearance:none;border:none}
+.btn-action:active{transform:scale(.98);opacity:.85}
+.btn-secondary{background:var(--card2);border:1px solid var(--border)!important;color:var(--text)}
+.btn-danger{background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.3)!important;color:var(--accent2)}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;max-width:500px;animation:slideUp .3s ease;max-height:80vh;overflow-y:auto}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px}
+.modal h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:16px}
+.modal-close{float:right;background:var(--card2);border:none;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;color:var(--muted)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:var(--bg);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:600;z-index:400;transition:transform .3s ease;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* RATIO POPUP */
+.ratio-bar-wrap{cursor:pointer;transition:opacity .15s}
+.ratio-bar-wrap:active{opacity:.8}
+/* full-screen overlay for popups */
+.popup-overlay{display:none;position:fixed;inset:0;z-index:250;background:transparent}
+.popup-overlay.open{display:block}
+/* ratio popup card */
+.ratio-popup{display:none;position:fixed;bottom:0;left:0;right:0;z-index:260;background:var(--card);border-radius:24px 24px 0 0;padding:10px 18px 24px;box-shadow:0 -8px 40px rgba(0,0,0,.4);animation:slideUp .28s cubic-bezier(.4,0,.2,1);max-height:72vh;overflow-y:auto;touch-action:pan-y;will-change:transform;transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.ratio-popup.open{display:block}
+.ratio-popup.dragging{transition:none!important;animation:none!important}
+.ratio-popup-grab{padding:8px 0 6px;margin:0 -18px 6px;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none}
+.ratio-popup-grab:active{cursor:grabbing}
+.ratio-popup-handle{width:44px;height:5px;background:var(--border);border-radius:3px;margin:0 auto;pointer-events:none}
+.ratio-popup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ratio-popup-header h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:800}
+.ratio-popup-close{background:var(--card2);border:none;border-radius:50%;width:30px;height:30px;font-size:15px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.ratio-popup-value{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;text-align:center;margin:2px 0 2px;line-height:1}
+.ratio-popup-sublabel{text-align:center;font-size:12px;color:var(--muted);margin-bottom:12px}
+.ratio-track-big{background:var(--border);border-radius:10px;height:12px;overflow:hidden;margin-bottom:14px}
+.ratio-fill-big{height:100%;background:var(--accent);border-radius:10px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.ratio-explain-block{background:var(--card2);border-radius:12px;padding:10px 14px;margin-bottom:8px}
+.ratio-explain-block p{font-size:12.5px;color:var(--muted);line-height:1.55}
+.ratio-explain-block strong{color:var(--text)}
+.ratio-formula{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-family:'Syne',sans-serif;font-weight:700;font-size:12.5px;text-align:center;margin-bottom:10px;color:var(--text)}
+.ratio-scale{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:6px}
+.ratio-scale-item{background:var(--card2);border-radius:10px;padding:8px 6px;text-align:center}
+.ratio-scale-item .rs-val{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;margin-bottom:2px}
+.ratio-scale-item .rs-label{font-size:10px;color:var(--muted);line-height:1.4}
+.ratio-locked-note{background:rgba(107,140,255,.1);border:1px solid rgba(107,140,255,.25);border-radius:10px;padding:8px 14px;font-size:11.5px;color:var(--accent3);margin-top:4px;line-height:1.5}
+
+/* STAT CARDS — clickable hint */
+.stat-card{cursor:pointer;transition:transform .12s,box-shadow .12s}
+.stat-card:active{transform:scale(.97)}
+
+/* HISTORY COMPARISON POPUP */
+.hist-popup{display:none;position:fixed;bottom:0;left:0;right:0;z-index:260;background:var(--card);border-radius:24px 24px 0 0;padding:24px 20px 40px;box-shadow:0 -8px 40px rgba(0,0,0,.4);animation:slideUp .28s cubic-bezier(.4,0,.2,1);max-height:85vh;overflow-y:auto}
+.hist-popup.open{display:block}
+.hist-popup-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px}
+.hist-popup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.hist-popup-header h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:800}
+.hist-popup-close{background:var(--card2);border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;color:var(--muted)}
+.hist-compare-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.hist-compare-label{font-size:12px;color:var(--muted);width:90px;flex-shrink:0;text-align:right}
+.hist-compare-bar-wrap{flex:1;background:var(--border);border-radius:6px;height:10px;overflow:hidden}
+.hist-compare-bar{height:100%;border-radius:6px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.hist-compare-val{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;width:36px;text-align:left;flex-shrink:0}
+.hist-delta-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.hist-delta-row:last-child{border-bottom:none}
+.hist-delta-row span:first-child{color:var(--muted)}
+.hist-delta-pos{color:var(--green);font-weight:700}
+.hist-delta-neg{color:var(--red);font-weight:700}
+.hist-delta-neu{color:var(--muted);font-weight:700}
+.hist-chip-active{border-color:var(--accent)!important}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">IG<span>Tracker</span></div>
+  <div class="header-right">
+    <div class="lang-btn" id="langBtn" onclick="toggleLangDropdown(event)">
+      <span id="langFlag">🇪🇸</span><span id="langCode">ES</span>
+      <div class="lang-dropdown" id="langDropdown">
+        <div class="lang-option active" data-lang="es" onclick="setLang('es',event)">🇪🇸 Español</div>
+        <div class="lang-option" data-lang="en-US" onclick="setLang('en-US',event)">🇺🇸 English (US)</div>
+        <div class="lang-option" data-lang="en-GB" onclick="setLang('en-GB',event)">🇬🇧 English (UK)</div>
+        <div class="lang-option" data-lang="pt" onclick="setLang('pt',event)">🇧🇷 Português</div>
+        <div class="lang-option" data-lang="fr" onclick="setLang('fr',event)">🇫🇷 Français</div>
+        <div class="lang-option" data-lang="de" onclick="setLang('de',event)">🇩🇪 Deutsch</div>
+        <div class="lang-option" data-lang="ja" onclick="setLang('ja',event)">🇯🇵 日本語</div>
+        <div class="lang-option" data-lang="hi" onclick="setLang('hi',event)">🇮🇳 हिन्दी</div>
+        <div class="lang-option" data-lang="ar" onclick="setLang('ar',event)">🇸🇦 العربية</div>
+        <div class="lang-option" data-lang="id" onclick="setLang('id',event)">🇮🇩 Indonesia</div>
+        <div class="lang-option" data-lang="ru" onclick="setLang('ru',event)">🇷🇺 Русский</div>
+      </div>
+    </div>
+    <div class="theme-btn" id="themeBtn">🌙</div>
+    <div class="version">v21</div>
+  </div>
+</div>
+
+<!-- UPLOAD VIEW -->
+<div id="uploadView">
+  <div class="hero">
+    <h1 id="heroTitle">Descubre quién <em>no te</em> sigue de vuelta</h1>
+    <p id="heroSub">Analiza tus datos de Instagram. Local, privado, sin servidores.</p>
+  </div>
+  <div class="privacy">
+    <span style="font-size:20px;flex-shrink:0">🔒</span>
+    <p><strong id="privacyStrong">100% privado.</strong> <span id="privacySub">Tus archivos nunca salen de tu dispositivo. Sin login.</span></p>
+  </div>
+  <div class="steps">
+    <div class="steps-label" id="stepsLabel">Cómo obtener tus datos</div>
+    <div class="step"><div class="step-n">1</div><div class="step-t" id="step1">Instagram → <strong>Perfil → ☰ → Configuración → Actividad → Descargar tu información</strong></div></div>
+    <div class="step"><div class="step-n">2</div><div class="step-t" id="step2">Selecciona formato <strong>JSON</strong> y solicita la descarga. Recibirás un ZIP por email.</div></div>
+    <div class="step"><div class="step-n">3</div><div class="step-t" id="step3">Descomprime el ZIP → carpeta <strong>connections/followers_and_following/</strong></div></div>
+    <div class="step"><div class="step-n">4</div><div class="step-t" id="step4">Selecciona <strong>followers_1.json</strong> y <strong>following.json</strong> a la vez.</div></div>
+  </div>
+
+  <div class="error-box" id="errorBox">⚠️ <span id="errorMsg"></span></div>
+
+  <div class="mode-selector">
+    <div class="mode-label" id="modeLabel">¿Qué período elegiste en Instagram?</div>
+    <div class="mode-options">
+      <div class="mode-option selected" id="modeAll" onclick="selectMode('all')">
+        <div class="mode-radio"></div>
+        <div class="mode-text">
+          <h4 id="modeAllTitle">🌐 Cualquier fecha / Todo el historial</h4>
+          <p id="modeAllDesc">Muestra quién de todos a quien sigues no te sigue de vuelta. También actualiza el ratio real.</p>
+        </div>
+      </div>
+      <div class="mode-option" id="modePeriod" onclick="selectMode('period')">
+        <div class="mode-radio"></div>
+        <div class="mode-text">
+          <h4 id="modePeriodTitle">📅 Período concreto (semana, mes, año…)</h4>
+          <p id="modePeriodDesc">Muestra de los que te siguieron en ese período cuántos sigues tú, quiénes son nuevos y quiénes te dejaron de seguir.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="upload-section">
+    <div class="upload-card" id="uploadCard">
+      <span class="upload-icon">📂</span>
+      <h3 id="uploadTitle">Sube tus archivos JSON</h3>
+      <p id="uploadDesc">Selecciona <strong>followers_1.json</strong> y <strong>following.json</strong> al mismo tiempo</p>
+      <button class="btn-upload" id="uploadBtn">📤 Seleccionar archivos</button>
+      <input type="file" id="fileInput" multiple accept=".json">
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <p id="analyzingText">Analizando tus datos...</p>
+</div>
+
+<!-- RESULTS -->
+<div class="results" id="results">
+
+  <!-- STATS: "No te siguen" (rojo) + "Seguidores" (verde) -->
+  <div class="stats-grid" style="margin-top:16px">
+    <div class="stat-card danger" onclick="activateTab('notFollowing')">
+      <div class="stat-num"><span id="statNotFollow">0</span><span class="stat-arrow">↓</span></div>
+      <div class="stat-label" id="labelNotFollow">No te siguen</div>
+    </div>
+    <div class="stat-card positive" onclick="activateTab('followers')">
+      <div class="stat-num"><span id="statFollowers">0</span><span class="stat-arrow">+</span></div>
+      <div class="stat-label" id="labelFollowers">Seguidores</div>
+    </div>
+    <div class="stat-card" onclick="activateTab('following')">
+      <div class="stat-num" id="statFollowing">0</div>
+      <div class="stat-label" id="labelFollowing">Siguiendo</div>
+    </div>
+    <div class="stat-card" onclick="activateTab('mutual')">
+      <div class="stat-num" id="statMutual">0</div>
+      <div class="stat-label" id="labelMutual">Mutuos</div>
+    </div>
+  </div>
+
+  <!-- RATIO — solo visible en modo 'all' -->
+  <div class="ratio-bar-wrap" id="ratioWrap" onclick="openRatioPopup(event)">
+    <div class="ratio-label"><span id="ratioLabel">Ratio seguidores/siguiendo</span><span id="ratioText">—</span></div>
+    <div class="ratio-track"><div class="ratio-fill" id="ratioFill" style="width:0%"></div></div>
+  </div>
+  <div class="ratio-bar-wrap locked" id="ratioLocked" style="display:none" onclick="openRatioPopup(event)">
+    <div class="ratio-label"><span id="ratioLabelLocked">Ratio seguidores/siguiendo</span><span id="ratioSaved">—</span></div>
+    <div class="ratio-track"><div class="ratio-fill" id="ratioFillSaved" style="width:0%"></div></div>
+    <div class="ratio-locked-msg" id="ratioLockedMsg">🔒 Ratio del último historial completo · Solo se actualiza con "Cualquier fecha"</div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="historySection" style="display:none;margin-bottom:16px">
+    <div id="historyLabel" style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">📊 Historial de análisis</div>
+    <div class="history-strip" id="historyStrip"></div>
+  </div>
+
+  <!-- SEARCH + SORT -->
+  <div class="search-row">
+    <input type="text" class="search-bar" id="searchBar" placeholder="🔍 Buscar usuario...">
+    <button class="sort-btn" id="sortBtn" onclick="toggleSort()">A→Z</button>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs" id="tabsContainer">
+    <div class="tab active" data-tab="notFollowing" id="tabNotFollowing">❌ No te siguen</div>
+    <div class="tab" data-tab="mutual" id="tabMutual">✅ Mutuos</div>
+    <div class="tab" data-tab="followers" id="tabFollowers">👥 Seguidores</div>
+    <div class="tab" data-tab="following" id="tabFollowing">➡️ Siguiendo</div>
+    <div class="tab" data-tab="blacklist" id="tabBlacklist">🚫 Lista negra</div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-title" id="listTitle">No te siguen</div>
+    <div class="count-pill" id="listCount">0</div>
+  </div>
+  <div class="precision-note" id="precisionNote"></div>
+  <div class="user-list" id="userList"></div>
+
+  <div class="export-row">
+    <button class="btn-export" id="exportTxtBtn" onclick="exportList('txt')">📋 Exportar TXT</button>
+    <button class="btn-export" id="exportCsvBtn" onclick="exportList('csv')">📊 Exportar CSV</button>
+  </div>
+  <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+    <button class="btn-action btn-secondary" id="resetBtn" onclick="resetApp()">🔄 Analizar otros archivos</button>
+    <button class="btn-action btn-danger" id="clearHistBtn" onclick="clearHistory()">🗑 Borrar historial guardado</button>
+  </div>
+</div>
+
+<!-- BLACKLIST MODAL -->
+<div class="modal-overlay" id="blacklistModal" onclick="closeBlacklist(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeBlacklist()">✕</button>
+    <h3 id="blacklistModalTitle">🚫 Lista negra</h3>
+    <p id="blacklistModalDesc" style="font-size:13px;color:var(--muted);margin-bottom:16px">Estos usuarios se ignoran en el análisis.</p>
+    <div id="blacklistContent" style="display:flex;flex-direction:column;gap:8px;max-height:50vh;overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- POPUP OVERLAY (closes any open popup on tap) -->
+<div class="popup-overlay" id="popupOverlay" onclick="closeAllPopups()"></div>
+
+<!-- RATIO POPUP -->
+<div class="ratio-popup" id="ratioPopup">
+  <div class="ratio-popup-grab" id="ratioPopupGrab"><div class="ratio-popup-handle"></div></div>
+  <div class="ratio-popup-header">
+    <h3 id="rp_title">📊 Ratio</h3>
+    <button class="ratio-popup-close" onclick="closeAllPopups()">✕</button>
+  </div>
+  <div class="ratio-popup-value" id="rp_value">—</div>
+  <div class="ratio-popup-sublabel" id="rp_sublabel"></div>
+  <div class="ratio-track-big"><div class="ratio-fill-big" id="rp_fill" style="width:0%"></div></div>
+  <div class="ratio-explain-block">
+    <p id="rp_explain1"></p>
+  </div>
+  <div class="ratio-explain-block" style="margin-bottom:12px">
+    <p id="rp_explain2"></p>
+  </div>
+  <div class="ratio-formula" id="rp_formula"></div>
+  <div class="ratio-scale" id="rp_scale"></div>
+  <div class="ratio-locked-note" id="rp_locked" style="display:none"></div>
+</div>
+
+<!-- HISTORY COMPARISON POPUP -->
+<div class="hist-popup" id="histPopup">
+  <div class="hist-popup-handle"></div>
+  <div class="hist-popup-header">
+    <h3 id="hp_title">📊 Comparativa</h3>
+    <button class="hist-popup-close" onclick="closeAllPopups()">✕</button>
+  </div>
+  <div id="hp_body"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// TRANSLATIONS
+// ══════════════════════════════════════════════════════
+const LANGS={
+es:{flag:'🇪🇸',code:'ES',dir:'ltr',t:{
+  heroTitle:'Descubre quién <em>no te</em> sigue de vuelta',heroSub:'Analiza tus datos de Instagram. Local, privado, sin servidores.',
+  privacyStrong:'100% privado.',privacySub:'Tus archivos nunca salen de tu dispositivo. Sin login.',
+  stepsLabel:'Cómo obtener tus datos',
+  step1:'Instagram → <strong>Perfil → ☰ → Configuración → Actividad → Descargar tu información</strong>',
+  step2:'Selecciona formato <strong>JSON</strong> y solicita la descarga. Recibirás un ZIP por email.',
+  step3:'Descomprime el ZIP → carpeta <strong>connections/followers_and_following/</strong>',
+  step4:'Selecciona <strong>followers_1.json</strong> y <strong>following.json</strong> a la vez.',
+  modeLabel:'¿Qué período elegiste en Instagram?',
+  modeAllTitle:'🌐 Cualquier fecha / Todo el historial',modeAllDesc:'Muestra quién de todos a quien sigues no te sigue de vuelta. También actualiza el ratio real.',
+  modePeriodTitle:'📅 Período concreto (semana, mes, año…)',modePeriodDesc:'Muestra de los que te siguieron en ese período cuántos sigues tú, quiénes son nuevos y quiénes te dejaron de seguir.',
+  uploadTitle:'Sube tus archivos JSON',uploadDesc:'Selecciona <strong>followers_1.json</strong> y <strong>following.json</strong> al mismo tiempo',uploadBtn:'📤 Seleccionar archivos',
+  analyzing:'Analizando tus datos...',
+  statNotFollow:'No te siguen',statFollowers:'Seguidores',statFollowing:'Siguiendo',statMutual:'Mutuos',
+  ratioLabel:'Ratio seguidores/siguiendo',ratioLockedMsg:'🔒 Ratio del último historial completo · Solo se actualiza con "Cualquier fecha"',
+  historyLabel:'📊 Historial de análisis',blacklistBadge:'en lista negra — gestionar',
+  searchPlaceholder:'🔍 Buscar usuario...',
+  tabNotFollowing:'❌ No te siguen',tabMutual:'✅ Mutuos',tabFollowers:'👥 Seguidores',tabFollowing:'➡️ Siguiendo',tabBlacklist:'🚫 Lista negra',
+  exportTxt:'📋 Exportar TXT',exportCsv:'📊 Exportar CSV',resetBtn:'🔄 Analizar otros archivos',clearHistBtn:'🗑 Borrar historial guardado',
+  blacklistModalTitle:'🚫 Lista negra',blacklistModalDesc:'Estos usuarios se ignoran en el análisis.',blacklistRemove:'Quitar',blacklistEmpty:'Lista negra vacía',emptyList:'¡No hay nadie aquí!',
+  precisionNote:'<strong>Nota sobre precisión:</strong> Algunos perfiles pueden aparecer aquí si te han bloqueado, tienen la cuenta desactivada o son errores temporales de IG. Usa el botón 🚫 para pasarlos a la <strong>lista negra</strong> y así ignorarlos en futuros análisis.',
+  modeFullHistory:'Historial completo',modePeriodShort:'Período concreto',
+  popDetail:'Detalle',popMode:'Modo',popNotFollow:'No te siguen',popFollowers:'Seguidores',popFollowing:'Siguiendo',popMutual:'Mutuos',popLost:'Te dejaron de seguir',popGained:'Nuevos seguidores',
+  diffLost:'te dejaron',diffGained:'nuevos',diffNone:'sin cambios',diffFirst:'primer análisis',
+  toastDone:'✅ Análisis completado',toastExport:'📥 Exportado como',toastEmpty:'⚠️ La lista está vacía',toastHistCleared:'🗑 Historial borrado',toastAdded:'en lista negra',toastRemoved:'quitado',
+  errNoFile:'No se seleccionó ningún archivo.',errTooMany:'Selecciona solo los 2 archivos JSON.',errRead:'Error leyendo ',showingOf:'Mostrando 200 de',confirmClear:'¿Borrar todo el historial guardado?',
+  ratioFormula:'Ratio = (Seguidores ÷ Siguiendo) × 100'
+}},
+'en-US':{flag:'🇺🇸',code:'EN',dir:'ltr',t:{
+  heroTitle:'Discover who <em>doesn\'t follow</em> you back',heroSub:'Analyze your Instagram data. Local, private, no servers.',
+  privacyStrong:'100% private.',privacySub:'Your files never leave your device. No login required.',
+  stepsLabel:'How to get your data',
+  step1:'Instagram → <strong>Profile → ☰ → Settings → Activity → Download your information</strong>',
+  step2:'Select <strong>JSON</strong> format and request the download. You\'ll receive a ZIP by email.',
+  step3:'Unzip the file → folder <strong>connections/followers_and_following/</strong>',
+  step4:'Select <strong>followers_1.json</strong> and <strong>following.json</strong> at the same time.',
+  modeLabel:'Which time period did you choose in Instagram?',
+  modeAllTitle:'🌐 Any date / Full history',modeAllDesc:'Shows who you follow but doesn\'t follow you back. Also updates the real ratio.',
+  modePeriodTitle:'📅 Specific period (week, month, year…)',modePeriodDesc:'Shows how many of the people who followed you in that period you follow back, who is new, and who unfollowed you.',
+  uploadTitle:'Upload your JSON files',uploadDesc:'Select <strong>followers_1.json</strong> and <strong>following.json</strong> at the same time',uploadBtn:'📤 Select files',
+  analyzing:'Analyzing your data...',
+  statNotFollow:"Doesn't follow back",statFollowers:'Followers',statFollowing:'Following',statMutual:'Mutual',
+  ratioLabel:'Followers/Following ratio',ratioLockedMsg:'🔒 Ratio from last full history · Only updates with "Any date"',
+  historyLabel:'📊 Analysis history',blacklistBadge:'on blacklist — manage',
+  searchPlaceholder:'🔍 Search user...',
+  tabNotFollowing:"❌ Doesn't follow back",tabMutual:'✅ Mutual',tabFollowers:'👥 Followers',tabFollowing:'➡️ Following',tabBlacklist:'🚫 Blacklist',
+  exportTxt:'📋 Export TXT',exportCsv:'📊 Export CSV',resetBtn:'🔄 Analyze other files',clearHistBtn:'🗑 Clear saved history',
+  blacklistModalTitle:'🚫 Blacklist',blacklistModalDesc:'These users are ignored in the analysis.',blacklistRemove:'Remove',blacklistEmpty:'Blacklist is empty',emptyList:'Nobody here!',
+  precisionNote:'<strong>Note on accuracy:</strong> Some profiles may appear here if they have blocked you, deactivated their account or due to temporary IG errors. Use the 🚫 button to move them to the <strong>blacklist</strong> and ignore them in future analyses.',
+  modeFullHistory:'Full history',modePeriodShort:'Specific period',
+  popDetail:'Detail',popMode:'Mode',popNotFollow:"Doesn't follow back",popFollowers:'Followers',popFollowing:'Following',popMutual:'Mutual',popLost:'Unfollowed you',popGained:'New followers',
+  diffLost:'unfollowed',diffGained:'new',diffNone:'no changes',diffFirst:'first analysis',
+  toastDone:'✅ Analysis complete',toastExport:'📥 Exported as',toastEmpty:'⚠️ The list is empty',toastHistCleared:'🗑 History cleared',toastAdded:'added to blacklist',toastRemoved:'removed',
+  errNoFile:'No file selected.',errTooMany:'Select only the 2 JSON files.',errRead:'Error reading ',showingOf:'Showing 200 of',confirmClear:'Delete all saved history?',
+  ratioFormula:'Ratio = (Followers ÷ Following) × 100'
+}},
+'en-GB':{flag:'🇬🇧',code:'EN',dir:'ltr',t:{
+  heroTitle:'Discover who <em>doesn\'t follow</em> you back',heroSub:'Analyse your Instagram data. Local, private, no servers.',
+  privacyStrong:'100% private.',privacySub:'Your files never leave your device. No login required.',
+  stepsLabel:'How to get your data',
+  step1:'Instagram → <strong>Profile → ☰ → Settings → Activity → Download your information</strong>',
+  step2:'Select <strong>JSON</strong> format and request the download. You\'ll receive a ZIP by email.',
+  step3:'Unzip the file → folder <strong>connections/followers_and_following/</strong>',
+  step4:'Select <strong>followers_1.json</strong> and <strong>following.json</strong> at the same time.',
+  modeLabel:'Which time period did you choose on Instagram?',
+  modeAllTitle:'🌐 Any date / Full history',modeAllDesc:'Shows who you follow but doesn\'t follow you back. Also updates the real ratio.',
+  modePeriodTitle:'📅 Specific period (week, month, year…)',modePeriodDesc:'Shows how many of the people who followed you in that period you follow back, who is new, and who unfollowed you.',
+  uploadTitle:'Upload your JSON files',uploadDesc:'Select <strong>followers_1.json</strong> and <strong>following.json</strong> at the same time',uploadBtn:'📤 Select files',
+  analyzing:'Analysing your data...',
+  statNotFollow:"Doesn't follow back",statFollowers:'Followers',statFollowing:'Following',statMutual:'Mutual',
+  ratioLabel:'Followers/Following ratio',ratioLockedMsg:'🔒 Ratio from last full history · Only updates with "Any date"',
+  historyLabel:'📊 Analysis history',blacklistBadge:'on blacklist — manage',
+  searchPlaceholder:'🔍 Search user...',
+  tabNotFollowing:"❌ Doesn't follow back",tabMutual:'✅ Mutual',tabFollowers:'👥 Followers',tabFollowing:'➡️ Following',tabBlacklist:'🚫 Blacklist',
+  exportTxt:'📋 Export TXT',exportCsv:'📊 Export CSV',resetBtn:'🔄 Analyse other files',clearHistBtn:'🗑 Clear saved history',
+  blacklistModalTitle:'🚫 Blacklist',blacklistModalDesc:'These users are ignored in the analysis.',blacklistRemove:'Remove',blacklistEmpty:'Blacklist is empty',emptyList:'Nobody here!',
+  precisionNote:'<strong>Note on accuracy:</strong> Some profiles may appear here if they have blocked you, deactivated their account or due to temporary IG errors. Use the 🚫 button to move them to the <strong>blacklist</strong> and ignore them in future analyses.',
+  modeFullHistory:'Full history',modePeriodShort:'Specific period',
+  popDetail:'Detail',popMode:'Mode',popNotFollow:"Doesn't follow back",popFollowers:'Followers',popFollowing:'Following',popMutual:'Mutual',popLost:'Unfollowed you',popGained:'New followers',
+  diffLost:'unfollowed',diffGained:'new',diffNone:'no changes',diffFirst:'first analysis',
+  toastDone:'✅ Analysis complete',toastExport:'📥 Exported as',toastEmpty:'⚠️ The list is empty',toastHistCleared:'🗑 History cleared',toastAdded:'added to blacklist',toastRemoved:'removed',
+  errNoFile:'No file selected.',errTooMany:'Select only the 2 JSON files.',errRead:'Error reading ',showingOf:'Showing 200 of',confirmClear:'Delete all saved history?',
+  ratioFormula:'Ratio = (Followers ÷ Following) × 100'
+}},
+fr:{flag:'🇫🇷',code:'FR',dir:'ltr',t:{
+  heroTitle:'Découvre qui <em>ne te suit pas</em> en retour',heroSub:'Analyse tes données Instagram. Local, privé, sans serveurs.',
+  privacyStrong:'100 % privé.',privacySub:'Tes fichiers ne quittent jamais ton appareil. Sans connexion.',
+  stepsLabel:'Comment obtenir tes données',
+  step1:'Instagram → <strong>Profil → ☰ → Paramètres → Activité → Télécharger tes informations</strong>',
+  step2:'Sélectionne le format <strong>JSON</strong> et demande le téléchargement. Tu recevras un ZIP par e-mail.',
+  step3:'Décompresse le ZIP → dossier <strong>connections/followers_and_following/</strong>',
+  step4:'Sélectionne <strong>followers_1.json</strong> et <strong>following.json</strong> en même temps.',
+  modeLabel:'Quelle période as-tu choisie sur Instagram ?',
+  modeAllTitle:'🌐 Toutes dates / Historique complet',modeAllDesc:'Montre qui tu suis sans qu\'ils te suivent en retour. Met aussi à jour le vrai ratio.',
+  modePeriodTitle:'📅 Période précise (semaine, mois, année…)',modePeriodDesc:'Montre combien de ceux qui t\'ont suivi sur cette période tu suis aussi, qui est nouveau et qui t\'a unfollow.',
+  uploadTitle:'Téléverse tes fichiers JSON',uploadDesc:'Sélectionne <strong>followers_1.json</strong> et <strong>following.json</strong> en même temps',uploadBtn:'📤 Sélectionner les fichiers',
+  analyzing:'Analyse de tes données...',
+  statNotFollow:'Ne te suit pas',statFollowers:'Abonnés',statFollowing:'Abonnements',statMutual:'Mutuels',
+  ratioLabel:'Ratio abonnés/abonnements',ratioLockedMsg:'🔒 Ratio du dernier historique complet · Mis à jour seulement avec "Toutes dates"',
+  historyLabel:'📊 Historique d\'analyses',blacklistBadge:'en liste noire — gérer',
+  searchPlaceholder:'🔍 Rechercher un utilisateur...',
+  tabNotFollowing:'❌ Ne te suit pas',tabMutual:'✅ Mutuels',tabFollowers:'👥 Abonnés',tabFollowing:'➡️ Abonnements',tabBlacklist:'🚫 Liste noire',
+  exportTxt:'📋 Exporter TXT',exportCsv:'📊 Exporter CSV',resetBtn:'🔄 Analyser d\'autres fichiers',clearHistBtn:'🗑 Effacer l\'historique',
+  blacklistModalTitle:'🚫 Liste noire',blacklistModalDesc:'Ces utilisateurs sont ignorés dans l\'analyse.',blacklistRemove:'Retirer',blacklistEmpty:'Liste noire vide',emptyList:'Personne ici !',
+  precisionNote:'<strong>Note sur la précision :</strong> Certains profils peuvent apparaître ici s\'ils t\'ont bloqué, ont désactivé leur compte ou à cause d\'erreurs temporaires d\'IG. Utilise le bouton 🚫 pour les déplacer vers la <strong>liste noire</strong> et les ignorer dans les futures analyses.',
+  modeFullHistory:'Historique complet',modePeriodShort:'Période précise',
+  popDetail:'Détail',popMode:'Mode',popNotFollow:'Ne te suit pas',popFollowers:'Abonnés',popFollowing:'Abonnements',popMutual:'Mutuels',popLost:'T\'ont unfollow',popGained:'Nouveaux abonnés',
+  diffLost:'unfollow',diffGained:'nouveaux',diffNone:'aucun changement',diffFirst:'première analyse',
+  toastDone:'✅ Analyse terminée',toastExport:'📥 Exporté comme',toastEmpty:'⚠️ La liste est vide',toastHistCleared:'🗑 Historique effacé',toastAdded:'en liste noire',toastRemoved:'retiré',
+  errNoFile:'Aucun fichier sélectionné.',errTooMany:'Sélectionne uniquement les 2 fichiers JSON.',errRead:'Erreur de lecture ',showingOf:'Affichage de 200 sur',confirmClear:'Effacer tout l\'historique enregistré ?',
+  ratioFormula:'Ratio = (Abonnés ÷ Abonnements) × 100'
+}},
+de:{flag:'🇩🇪',code:'DE',dir:'ltr',t:{
+  heroTitle:'Entdecke, wer dir <em>nicht zurück</em> folgt',heroSub:'Analysiere deine Instagram-Daten. Lokal, privat, ohne Server.',
+  privacyStrong:'100 % privat.',privacySub:'Deine Dateien verlassen nie dein Gerät. Kein Login nötig.',
+  stepsLabel:'So bekommst du deine Daten',
+  step1:'Instagram → <strong>Profil → ☰ → Einstellungen → Aktivität → Informationen herunterladen</strong>',
+  step2:'Wähle das <strong>JSON</strong>-Format und fordere den Download an. Du erhältst eine ZIP per E-Mail.',
+  step3:'ZIP entpacken → Ordner <strong>connections/followers_and_following/</strong>',
+  step4:'Wähle <strong>followers_1.json</strong> und <strong>following.json</strong> gleichzeitig aus.',
+  modeLabel:'Welchen Zeitraum hast du in Instagram gewählt?',
+  modeAllTitle:'🌐 Beliebiges Datum / Gesamter Verlauf',modeAllDesc:'Zeigt, wem du folgst, der dir nicht zurückfolgt. Aktualisiert auch das echte Verhältnis.',
+  modePeriodTitle:'📅 Bestimmter Zeitraum (Woche, Monat, Jahr…)',modePeriodDesc:'Zeigt, wie vielen Personen, die dir in diesem Zeitraum gefolgt sind, du folgst, wer neu ist und wer dir entfolgt ist.',
+  uploadTitle:'Lade deine JSON-Dateien hoch',uploadDesc:'Wähle <strong>followers_1.json</strong> und <strong>following.json</strong> gleichzeitig',uploadBtn:'📤 Dateien auswählen',
+  analyzing:'Daten werden analysiert...',
+  statNotFollow:'Folgen dir nicht',statFollowers:'Follower',statFollowing:'Folge ich',statMutual:'Gegenseitig',
+  ratioLabel:'Follower/Folge-ich-Verhältnis',ratioLockedMsg:'🔒 Verhältnis vom letzten vollständigen Verlauf · Nur mit "Beliebiges Datum" aktualisiert',
+  historyLabel:'📊 Analyseverlauf',blacklistBadge:'auf Sperrliste — verwalten',
+  searchPlaceholder:'🔍 Benutzer suchen...',
+  tabNotFollowing:'❌ Folgen dir nicht',tabMutual:'✅ Gegenseitig',tabFollowers:'👥 Follower',tabFollowing:'➡️ Folge ich',tabBlacklist:'🚫 Sperrliste',
+  exportTxt:'📋 TXT exportieren',exportCsv:'📊 CSV exportieren',resetBtn:'🔄 Andere Dateien analysieren',clearHistBtn:'🗑 Gespeicherten Verlauf löschen',
+  blacklistModalTitle:'🚫 Sperrliste',blacklistModalDesc:'Diese Nutzer werden bei der Analyse ignoriert.',blacklistRemove:'Entfernen',blacklistEmpty:'Sperrliste leer',emptyList:'Niemand hier!',
+  precisionNote:'<strong>Hinweis zur Genauigkeit:</strong> Einige Profile können hier erscheinen, wenn sie dich blockiert haben, ihr Konto deaktiviert ist oder es vorübergehende IG-Fehler gibt. Verwende die 🚫-Schaltfläche, um sie auf die <strong>Sperrliste</strong> zu setzen und sie in zukünftigen Analysen zu ignorieren.',
+  modeFullHistory:'Gesamter Verlauf',modePeriodShort:'Bestimmter Zeitraum',
+  popDetail:'Details',popMode:'Modus',popNotFollow:'Folgen dir nicht',popFollowers:'Follower',popFollowing:'Folge ich',popMutual:'Gegenseitig',popLost:'Sind dir entfolgt',popGained:'Neue Follower',
+  diffLost:'entfolgt',diffGained:'neu',diffNone:'keine Änderungen',diffFirst:'erste Analyse',
+  toastDone:'✅ Analyse abgeschlossen',toastExport:'📥 Exportiert als',toastEmpty:'⚠️ Die Liste ist leer',toastHistCleared:'🗑 Verlauf gelöscht',toastAdded:'auf Sperrliste',toastRemoved:'entfernt',
+  errNoFile:'Keine Datei ausgewählt.',errTooMany:'Wähle nur die 2 JSON-Dateien.',errRead:'Fehler beim Lesen ',showingOf:'Zeige 200 von',confirmClear:'Gesamten gespeicherten Verlauf löschen?',
+  ratioFormula:'Verhältnis = (Follower ÷ Folge ich) × 100'
+}},
+ja:{flag:'🇯🇵',code:'JA',dir:'ltr',t:{
+  heroTitle:'<em>フォロー</em>を返さない人を発見',heroSub:'Instagramのデータを分析。ローカル、プライベート、サーバー不要。',
+  privacyStrong:'100% プライベート。',privacySub:'ファイルがデバイスから出ることはありません。ログイン不要。',
+  stepsLabel:'データを取得する方法',
+  step1:'Instagram → <strong>プロフィール → ☰ → 設定 → アクティビティ → 情報をダウンロード</strong>',
+  step2:'<strong>JSON</strong> 形式を選択してダウンロードを申請。メールでZIPが届きます。',
+  step3:'ZIPを解凍 → <strong>connections/followers_and_following/</strong> フォルダ',
+  step4:'<strong>followers_1.json</strong> と <strong>following.json</strong> を同時に選択。',
+  modeLabel:'Instagramでどの期間を選びましたか？',
+  modeAllTitle:'🌐 すべての日付 / 全履歴',modeAllDesc:'あなたがフォローしているのにフォローバックされていない人を表示。実際の比率も更新します。',
+  modePeriodTitle:'📅 特定の期間（週、月、年…）',modePeriodDesc:'その期間中にあなたをフォローした人のうち、あなたがフォローしている人数、新しい人、フォロー解除した人を表示します。',
+  uploadTitle:'JSONファイルをアップロード',uploadDesc:'<strong>followers_1.json</strong> と <strong>following.json</strong> を同時に選択',uploadBtn:'📤 ファイルを選択',
+  analyzing:'データを分析中...',
+  statNotFollow:'フォロー返してない',statFollowers:'フォロワー',statFollowing:'フォロー中',statMutual:'相互',
+  ratioLabel:'フォロワー/フォロー比率',ratioLockedMsg:'🔒 最後の完全履歴の比率 ·「すべての日付」でのみ更新',
+  historyLabel:'📊 分析履歴',blacklistBadge:'ブラックリスト — 管理',
+  searchPlaceholder:'🔍 ユーザーを検索...',
+  tabNotFollowing:'❌ フォロー返してない',tabMutual:'✅ 相互',tabFollowers:'👥 フォロワー',tabFollowing:'➡️ フォロー中',tabBlacklist:'🚫 ブラックリスト',
+  exportTxt:'📋 TXTエクスポート',exportCsv:'📊 CSVエクスポート',resetBtn:'🔄 他のファイルを分析',clearHistBtn:'🗑 保存履歴を削除',
+  blacklistModalTitle:'🚫 ブラックリスト',blacklistModalDesc:'これらのユーザーは分析で無視されます。',blacklistRemove:'削除',blacklistEmpty:'ブラックリストは空です',emptyList:'誰もいません！',
+  precisionNote:'<strong>精度に関する注意：</strong> ブロックされている、アカウントが無効化されている、またはIGの一時的なエラーにより、一部のプロフィールがここに表示されることがあります。🚫 ボタンで <strong>ブラックリスト</strong> に追加すると、今後の分析で無視されます。',
+  modeFullHistory:'全履歴',modePeriodShort:'特定の期間',
+  popDetail:'詳細',popMode:'モード',popNotFollow:'フォロー返してない',popFollowers:'フォロワー',popFollowing:'フォロー中',popMutual:'相互',popLost:'フォロー解除した',popGained:'新規フォロワー',
+  diffLost:'解除',diffGained:'新規',diffNone:'変化なし',diffFirst:'初回分析',
+  toastDone:'✅ 分析完了',toastExport:'📥 エクスポート完了',toastEmpty:'⚠️ リストは空です',toastHistCleared:'🗑 履歴を削除しました',toastAdded:'ブラックリスト追加',toastRemoved:'削除',
+  errNoFile:'ファイルが選択されていません。',errTooMany:'JSONファイルを2つだけ選択してください。',errRead:'読み込みエラー ',showingOf:'200件を表示',confirmClear:'保存履歴をすべて削除しますか？',
+  ratioFormula:'比率 = (フォロワー ÷ フォロー中) × 100'
+}},
+pt:{flag:'🇧🇷',code:'PT',dir:'ltr',t:{
+  heroTitle:'Descubra quem <em>não te</em> segue de volta',heroSub:'Analise seus dados do Instagram. Local, privado, sem servidores.',
+  privacyStrong:'100% privado.',privacySub:'Seus arquivos nunca saem do seu dispositivo. Sem login.',
+  stepsLabel:'Como obter seus dados',
+  step1:'Instagram → <strong>Perfil → ☰ → Configurações → Atividade → Baixar suas informações</strong>',
+  step2:'Selecione o formato <strong>JSON</strong> e solicite o download. Você receberá um ZIP por e-mail.',
+  step3:'Descompacte o ZIP → pasta <strong>connections/followers_and_following/</strong>',
+  step4:'Selecione <strong>followers_1.json</strong> e <strong>following.json</strong> ao mesmo tempo.',
+  modeLabel:'Qual período você escolheu no Instagram?',
+  modeAllTitle:'🌐 Qualquer data / Todo o histórico',modeAllDesc:'Mostra quem você segue mas não te segue de volta. Também atualiza o ratio real.',
+  modePeriodTitle:'📅 Período específico (semana, mês, ano…)',modePeriodDesc:'Mostra quantos dos que te seguiram nesse período você segue, quem é novo e quem deixou de te seguir.',
+  uploadTitle:'Envie seus arquivos JSON',uploadDesc:'Selecione <strong>followers_1.json</strong> e <strong>following.json</strong> ao mesmo tempo',uploadBtn:'📤 Selecionar arquivos',
+  analyzing:'Analisando seus dados...',
+  statNotFollow:'Não te seguem',statFollowers:'Seguidores',statFollowing:'Seguindo',statMutual:'Mútuos',
+  ratioLabel:'Ratio seguidores/seguindo',ratioLockedMsg:'🔒 Ratio do último histórico completo · Só atualiza com "Qualquer data"',
+  historyLabel:'📊 Histórico de análises',blacklistBadge:'na lista negra — gerenciar',
+  searchPlaceholder:'🔍 Buscar usuário...',
+  tabNotFollowing:'❌ Não te seguem',tabMutual:'✅ Mútuos',tabFollowers:'👥 Seguidores',tabFollowing:'➡️ Seguindo',tabBlacklist:'🚫 Lista negra',
+  exportTxt:'📋 Exportar TXT',exportCsv:'📊 Exportar CSV',resetBtn:'🔄 Analisar outros arquivos',clearHistBtn:'🗑 Limpar histórico salvo',
+  blacklistModalTitle:'🚫 Lista negra',blacklistModalDesc:'Esses usuários são ignorados na análise.',blacklistRemove:'Remover',blacklistEmpty:'Lista negra vazia',emptyList:'Ninguém aqui!',
+  precisionNote:'<strong>Nota sobre precisão:</strong> Alguns perfis podem aparecer aqui se te bloquearam, desativaram a conta ou por erros temporários do IG. Use o botão 🚫 para movê-los para a <strong>lista negra</strong> e ignorá-los em análises futuras.',
+  modeFullHistory:'Histórico completo',modePeriodShort:'Período específico',
+  popDetail:'Detalhe',popMode:'Modo',popNotFollow:'Não te seguem',popFollowers:'Seguidores',popFollowing:'Seguindo',popMutual:'Mútuos',popLost:'Deixaram de seguir',popGained:'Novos seguidores',
+  diffLost:'deixaram',diffGained:'novos',diffNone:'sem mudanças',diffFirst:'primeira análise',
+  toastDone:'✅ Análise concluída',toastExport:'📥 Exportado como',toastEmpty:'⚠️ La lista está vazia',toastHistCleared:'🗑 Histórico apagado',toastAdded:'na lista negra',toastRemoved:'removido',
+  errNoFile:'Nenhum arquivo selecionado.',errTooMany:'Selecione apenas os 2 arquivos JSON.',errRead:'Erro ao ler ',showingOf:'Mostrando 200 de',confirmClear:'Apagar todo o histórico salvo?',
+  ratioFormula:'Ratio = (Seguidores ÷ Seguindo) × 100'
+}},
+hi:{flag:'🇮🇳',code:'HI',dir:'ltr',t:{
+  heroTitle:'जानें कौन <em>आपको फॉलो</em> नहीं करता',heroSub:'अपना Instagram डेटा विश्लेषण करें। लोकल, निजी, बिना सर्वर।',
+  privacyStrong:'100% निजी।',privacySub:'आपकी फाइलें कभी आपके डिवाइस से बाहर नहीं जातीं। कोई लॉगिन नहीं।',
+  stepsLabel:'अपना डेटा कैसे प्राप्त करें',
+  step1:'Instagram → <strong>प्रोफाइल → ☰ → सेटिंग्स → गतिविधि → जानकारी डाउनलोड करें</strong>',
+  step2:'<strong>JSON</strong> फॉर्मेट चुनें और डाउनलोड अनुरोध करें। ईमेल पर ZIP मिलेगी।',
+  step3:'ZIP खोलें → फोल्डर <strong>connections/followers_and_following/</strong>',
+  step4:'<strong>followers_1.json</strong> और <strong>following.json</strong> एक साथ चुनें।',
+  modeLabel:'आपने Instagram में कौन सा समय चुना?',
+  modeAllTitle:'🌐 कोई भी तारीख / पूरा इतिहास',modeAllDesc:'दिखाता है कि जिन्हें आप फॉलो करते हैं उनमें से कौन वापस फॉलो नहीं करता। रेशियो भी अपडेट होता है।',
+  modePeriodTitle:'📅 विशिष्ट अवधि (सप्ताह, महीना, साल…)',modePeriodDesc:'उस अवधि में जिन्होंने आपको फॉलो किया, उनमें से आप कितनों को फॉलो करते हैं और किसने अनफॉलो किया।',
+  uploadTitle:'अपनी JSON फाइलें अपलोड करें',uploadDesc:'<strong>followers_1.json</strong> और <strong>following.json</strong> एक साथ चुनें',uploadBtn:'📤 फाइलें चुनें',
+  analyzing:'आपका डेटा विश्लेषण हो रहा है...',
+  statNotFollow:'फॉलो नहीं करते',statFollowers:'फॉलोअर्स',statFollowing:'फॉलोइंग',statMutual:'म्यूचुअल',
+  ratioLabel:'फॉलोअर्स/फॉलोइंग रेशियो',ratioLockedMsg:'🔒 अंतिम पूर्ण इतिहास का रेशियो · केवल "कोई भी तारीख" से अपडेट होता है',
+  historyLabel:'📊 विश्लेषण इतिहास',blacklistBadge:'ब्लैकलिस्ट में — प्रबंधित करें',
+  searchPlaceholder:'🔍 यूजर खोजें...',
+  tabNotFollowing:'❌ फॉलो नहीं करते',tabMutual:'✅ म्यूचुअल',tabFollowers:'👥 फॉलोअर्स',tabFollowing:'➡️ फॉलोइंग',tabBlacklist:'🚫 ब्लैकलिस्ट',
+  exportTxt:'📋 TXT निर्यात',exportCsv:'📊 CSV निर्यात',resetBtn:'🔄 अन्य फाइलें विश्लेषण करें',clearHistBtn:'🗑 इतिहास हटाएं',
+  blacklistModalTitle:'🚫 ब्लैकलिस्ट',blacklistModalDesc:'ये उपयोगकर्ता विश्लेषण में अनदेखे जाते हैं।',blacklistRemove:'हटाएं',blacklistEmpty:'ब्लैकलिस्ट खाली है',emptyList:'यहां कोई नहीं!',
+  precisionNote:'<strong>सटीकता पर नोट:</strong> कुछ प्रोफाइल यहां दिख सकते हैं यदि उन्होंने आपको ब्लॉक किया है, खाता निष्क्रिय किया है या IG की अस्थायी त्रुटि है। 🚫 बटन से उन्हें <strong>ब्लैकलिस्ट</strong> में डालें ताकि वे भविष्य के विश्लेषणों में अनदेखे हों।',
+  modeFullHistory:'पूर्ण इतिहास',modePeriodShort:'विशिष्ट अवधि',
+  popDetail:'विवरण',popMode:'मोड',popNotFollow:'फॉलो नहीं करते',popFollowers:'फॉलोअर्स',popFollowing:'फॉलोइंग',popMutual:'म्यूचुअल',popLost:'अनफॉलो किया',popGained:'नए फॉलोअर्स',
+  diffLost:'ने छोड़ा',diffGained:'नए',diffNone:'कोई बदलाव नहीं',diffFirst:'पहला विश्लेषण',
+  toastDone:'✅ विश्लेषण पूर्ण',toastExport:'📥 निर्यात किया',toastEmpty:'⚠️ सूची खाली है',toastHistCleared:'🗑 इतिहास हटाया',toastAdded:'ब्लैकलिस्ट में',toastRemoved:'हटाया',
+  errNoFile:'कोई फाइल नहीं चुनी।',errTooMany:'केवल 2 JSON फाइलें चुनें।',errRead:'पढ़ने में त्रुटि ',showingOf:'200 दिखा रहे हैं',confirmClear:'पूरा इतिहास हटाएं?',
+  ratioFormula:'रेशियो = (फॉलोअर्स ÷ फॉलोइंग) × 100'
+}},
+ar:{flag:'🇸🇦',code:'AR',dir:'rtl',t:{
+  heroTitle:'اكتشف من <em>لا يتابعك</em> مجدداً',heroSub:'حلّل بيانات Instagram الخاصة بك. محلي، خاص، بلا خوادم.',
+  privacyStrong:'خصوصية 100٪.',privacySub:'ملفاتك لا تغادر جهازك أبداً. بدون تسجيل دخول.',
+  stepsLabel:'كيفية الحصول على بياناتك',
+  step1:'Instagram ← <strong>الملف الشخصي ← ☰ ← الإعدادات ← النشاط ← تنزيل معلوماتك</strong>',
+  step2:'اختر تنسيق <strong>JSON</strong> واطلب التنزيل. ستصلك ملفات ZIP عبر البريد الإلكتروني.',
+  step3:'فك ضغط الملف ← مجلد <strong>connections/followers_and_following/</strong>',
+  step4:'اختر <strong>followers_1.json</strong> و<strong>following.json</strong> في آنٍ واحد.',
+  modeLabel:'ما الفترة الزمنية التي اخترتها في Instagram؟',
+  modeAllTitle:'🌐 أي تاريخ / كامل السجل',modeAllDesc:'يعرض من تتابعه لكنه لا يتابعك. يُحدّث النسبة الحقيقية أيضاً.',
+  modePeriodTitle:'📅 فترة محددة (أسبوع، شهر، سنة…)',modePeriodDesc:'يعرض من تابعك في تلك الفترة، ومن تتابعه، والجدد، ومن أوقف متابعتك.',
+  uploadTitle:'ارفع ملفات JSON',uploadDesc:'اختر <strong>followers_1.json</strong> و<strong>following.json</strong> معاً',uploadBtn:'📤 اختيار الملفات',
+  analyzing:'جارٍ تحليل بياناتك...',
+  statNotFollow:'لا يتابعونك',statFollowers:'المتابعون',statFollowing:'المتابَعون',statMutual:'المتبادلون',
+  ratioLabel:'نسبة المتابعين/المتابَعين',ratioLockedMsg:'🔒 نسبة آخر سجل كامل · تُحدَّث فقط مع "أي تاريخ"',
+  historyLabel:'📊 سجل التحليلات',blacklistBadge:'في القائمة السوداء — إدارة',
+  searchPlaceholder:'🔍 ابحث عن مستخدم...',
+  tabNotFollowing:'❌ لا يتابعونك',tabMutual:'✅ متبادل',tabFollowers:'👥 المتابعون',tabFollowing:'➡️ المتابَعون',tabBlacklist:'🚫 قائمة سوداء',
+  exportTxt:'📋 تصدير TXT',exportCsv:'📊 تصدير CSV',resetBtn:'🔄 تحليل ملفات أخرى',clearHistBtn:'🗑 حذف السجل المحفوظ',
+  blacklistModalTitle:'🚫 القائمة السوداء',blacklistModalDesc:'يتم تجاهل هؤلاء المستخدمين في التحليل.',blacklistRemove:'إزالة',blacklistEmpty:'القائمة السوداء فارغة',emptyList:'لا أحد هنا!',
+  precisionNote:'<strong>ملاحظة حول الدقة:</strong> قد تظهر بعض الحسابات هنا إذا قامت بحظرك أو عُطِّلت أو بسبب أخطاء مؤقتة في IG. استخدم زر 🚫 لنقلها إلى <strong>القائمة السوداء</strong> لتجاهلها في التحليلات المستقبلية.',
+  modeFullHistory:'السجل الكامل',modePeriodShort:'فترة محددة',
+  popDetail:'تفاصيل',popMode:'الوضع',popNotFollow:'لا يتابعونك',popFollowers:'المتابعون',popFollowing:'المتابَعون',popMutual:'المتبادلون',popLost:'أوقفوا متابعتك',popGained:'متابعون جدد',
+  diffLost:'تركوك',diffGained:'جدد',diffNone:'لا تغييرات',diffFirst:'أول تحليل',
+  toastDone:'✅ اكتمل التحليل',toastExport:'📥 تم التصدير كـ',toastEmpty:'⚠️ القائمة فارغة',toastHistCleared:'🗑 تم حذف السجل',toastAdded:'في القائمة السوداء',toastRemoved:'تمت الإزالة',
+  errNoFile:'لم يتم اختيار أي ملف.',errTooMany:'اختر ملفَي JSON فقط.',errRead:'خطأ في قراءة ',showingOf:'عرض 200 من',confirmClear:'حذف كل السجل المحفوظ؟',
+  ratioFormula:'النسبة = (المتابعون ÷ المتابَعون) × 100'
+}},
+id:{flag:'🇮🇩',code:'ID',dir:'ltr',t:{
+  heroTitle:'Temukan siapa yang <em>tidak mengikuti</em> kamu balik',heroSub:'Analisis data Instagram kamu. Lokal, privat, tanpa server.',
+  privacyStrong:'100% privat.',privacySub:'File kamu tidak pernah meninggalkan perangkat. Tanpa login.',
+  stepsLabel:'Cara mendapatkan data kamu',
+  step1:'Instagram → <strong>Profil → ☰ → Pengaturan → Aktivitas → Unduh informasimu</strong>',
+  step2:'Pilih format <strong>JSON</strong> dan minta unduhan. Kamu akan menerima ZIP melalui email.',
+  step3:'Ekstrak ZIP → folder <strong>connections/followers_and_following/</strong>',
+  step4:'Pilih <strong>followers_1.json</strong> dan <strong>following.json</strong> sekaligus.',
+  modeLabel:'Periode mana yang kamu pilih di Instagram?',
+  modeAllTitle:'🌐 Tanggal apa saja / Semua riwayat',modeAllDesc:'Menampilkan siapa yang kamu ikuti tapi tidak mengikutimu balik. Juga memperbarui rasio sebenarnya.',
+  modePeriodTitle:'📅 Periode tertentu (minggu, bulan, tahun…)',modePeriodDesc:'Menampilkan berapa banyak dari yang mengikutimu di periode itu yang kamu ikuti, siapa yang baru, dan siapa yang berhenti mengikuti.',
+  uploadTitle:'Unggah file JSON kamu',uploadDesc:'Pilih <strong>followers_1.json</strong> dan <strong>following.json</strong> sekaligus',uploadBtn:'📤 Pilih file',
+  analyzing:'Menganalisis data kamu...',
+  statNotFollow:'Tidak mengikuti balik',statFollowers:'Pengikut',statFollowing:'Mengikuti',statMutual:'Saling ikut',
+  ratioLabel:'Rasio pengikut/mengikuti',ratioLockedMsg:'🔒 Rasio dari riwayat lengkap terakhir · Hanya diperbarui dengan "Tanggal apa saja"',
+  historyLabel:'📊 Riwayat analisis',blacklistBadge:'di daftar hitam — kelola',
+  searchPlaceholder:'🔍 Cari pengguna...',
+  tabNotFollowing:'❌ Tidak ikut balik',tabMutual:'✅ Saling ikut',tabFollowers:'👥 Pengikut',tabFollowing:'➡️ Mengikuti',tabBlacklist:'🚫 Daftar hitam',
+  exportTxt:'📋 Ekspor TXT',exportCsv:'📊 Ekspor CSV',resetBtn:'🔄 Analisis file lain',clearHistBtn:'🗑 Hapus riwayat tersimpan',
+  blacklistModalTitle:'🚫 Daftar hitam',blacklistModalDesc:'Pengguna ini diabaikan dalam analisis.',blacklistRemove:'Hapus',blacklistEmpty:'Daftar hitam kosong',emptyList:'Tidak ada siapapun!',
+  precisionNote:'<strong>Catatan tentang akurasi:</strong> Beberapa profil mungkin muncul di sini jika mereka telah memblokirmu, menonaktifkan akun, atau karena kesalahan sementara IG. Gunakan tombol 🚫 untuk memindahkannya ke <strong>daftar hitam</strong> agar diabaikan di analisis berikutnya.',
+  modeFullHistory:'Riwayat lengkap',modePeriodShort:'Periode tertentu',
+  popDetail:'Detail',popMode:'Mode',popNotFollow:'Tidak ikut balik',popFollowers:'Pengikut',popFollowing:'Mengikuti',popMutual:'Saling ikut',popLost:'Berhenti mengikuti',popGained:'Pengikut baru',
+  diffLost:'meninggalkan',diffGained:'baru',diffNone:'tidak ada perubahan',diffFirst:'analisis pertama',
+  toastDone:'✅ Analisis selesai',toastExport:'📥 Diekspor sebagai',toastEmpty:'⚠️ Daftar kosong',toastHistCleared:'🗑 Riwayat dihapus',toastAdded:'di daftar hitam',toastRemoved:'dihapus',
+  errNoFile:'Tidak ada file dipilih.',errTooMany:'Pilih hanya 2 file JSON.',errRead:'Kesalahan membaca ',showingOf:'Menampilkan 200 dari',confirmClear:'Hapus semua riwayat tersimpan?',
+  ratioFormula:'Rasio = (Pengikut ÷ Mengikuti) × 100'
+}},
+ru:{flag:'🇷🇺',code:'RU',dir:'ltr',t:{
+  heroTitle:'Узнай, кто <em>не подписан</em> на тебя в ответ',heroSub:'Анализируй свои данные Instagram. Локально, конфиденциально, без серверов.',
+  privacyStrong:'100% конфиденциально.',privacySub:'Твои файлы никогда не покидают устройство. Без входа.',
+  stepsLabel:'Как получить свои данные',
+  step1:'Instagram → <strong>Профиль → ☰ → Настройки → Действия → Скачать твою информацию</strong>',
+  step2:'Выбери формат <strong>JSON</strong> и запроси скачивание. Получишь ZIP по почте.',
+  step3:'Распакуй ZIP → папка <strong>connections/followers_and_following/</strong>',
+  step4:'Выбери <strong>followers_1.json</strong> и <strong>following.json</strong> одновременно.',
+  modeLabel:'Какой период ты выбрал в Instagram?',
+  modeAllTitle:'🌐 Любая дата / Вся история',modeAllDesc:'Показывает, кто из тех, на кого ты подписан, не подписан на тебя. Также обновляет реальное соотношение.',
+  modePeriodTitle:'📅 Конкретный период (неделя, месяц, год…)',modePeriodDesc:'Показывает, сколько из подписавшихся в этот период ты сам читаешь, кто новый и кто отписался.',
+  uploadTitle:'Загрузи свои JSON-файлы',uploadDesc:'Выбери <strong>followers_1.json</strong> и <strong>following.json</strong> одновременно',uploadBtn:'📤 Выбрать файлы',
+  analyzing:'Анализ данных...',
+  statNotFollow:'Не подписаны',statFollowers:'Подписчики',statFollowing:'Подписки',statMutual:'Взаимные',
+  ratioLabel:'Соотношение подписчики/подписки',ratioLockedMsg:'🔒 Соотношение из последней полной истории · Обновляется только в режиме «Любая дата»',
+  historyLabel:'📊 История анализов',blacklistBadge:'в чёрном списке — управлять',
+  searchPlaceholder:'🔍 Поиск пользователя...',
+  tabNotFollowing:'❌ Не подписаны',tabMutual:'✅ Взаимные',tabFollowers:'👥 Подписчики',tabFollowing:'➡️ Подписки',tabBlacklist:'🚫 Чёрный список',
+  exportTxt:'📋 Экспорт TXT',exportCsv:'📊 Экспорт CSV',resetBtn:'🔄 Анализировать другие файлы',clearHistBtn:'🗑 Очистить сохранённую историю',
+  blacklistModalTitle:'🚫 Чёрный список',blacklistModalDesc:'Эти пользователи игнорируются при анализе.',blacklistRemove:'Удалить',blacklistEmpty:'Чёрный список пуст',emptyList:'Здесь никого нет!',
+  precisionNote:'<strong>О точности:</strong> Некоторые профили могут появляться здесь, если они тебя заблокировали, отключили аккаунт или из-за временных ошибок IG. Используй кнопку 🚫, чтобы добавить их в <strong>чёрный список</strong> и игнорировать в будущих анализах.',
+  modeFullHistory:'Вся история',modePeriodShort:'Конкретный период',
+  popDetail:'Детали',popMode:'Режим',popNotFollow:'Не подписаны',popFollowers:'Подписчики',popFollowing:'Подписки',popMutual:'Взаимные',popLost:'Отписались',popGained:'Новые подписчики',
+  diffLost:'отписались',diffGained:'новых',diffNone:'без изменений',diffFirst:'первый анализ',
+  toastDone:'✅ Анализ завершён',toastExport:'📥 Экспортировано как',toastEmpty:'⚠️ Список пуст',toastHistCleared:'🗑 История удалена',toastAdded:'в чёрном списке',toastRemoved:'удалён',
+  errNoFile:'Файл не выбран.',errTooMany:'Выбери только 2 JSON-файла.',errRead:'Ошибка чтения ',showingOf:'Показано 200 из',confirmClear:'Удалить всю сохранённую историю?',
+  ratioFormula:'Соотношение = (Подписчики ÷ Подписки) × 100'
+}}};
+
+// ══════════════════════════════════════════════════════
+// STATE & REACTIVE ARCHITECTURE
+// ══════════════════════════════════════════════════════
+const AVATAR_COLORS=['#6b8cff','#ff6b6b','#c8ff00','#ff9f43','#a29bfe','#fd79a8','#00b894','#fdcb6e'];
+let currentLang=localStorage.getItem('ig_lang')||'es';
+if(currentLang==='en'){currentLang='en-US';localStorage.setItem('ig_lang','en-US');}
+if(!LANGS[currentLang])currentLang='es';
+
+let blacklist=new Set(JSON.parse(localStorage.getItem('ig_blacklist')||'[]'));
+let appHistory=JSON.parse(localStorage.getItem('ig_history')||'[]');
+let savedRatio=JSON.parse(localStorage.getItem('ig_ratio')||'null');
+let openPopover=null;
+let currentTab='notFollowing';
+let currentList=[];
+let sortAZ=false;
+let analysisMode='all';
+
+// Non-destructive state using ES6 getters for live filtering
+let state={
+  rawFollowers: [],
+  rawFollowing: [],
+  get followers() {
+    return this.rawFollowers.filter(u => !blacklist.has(u));
+  },
+  get following() {
+    return this.rawFollowing.filter(u => !blacklist.has(u));
+  },
+  get notFollowing() {
+    const followersSet = new Set(this.followers);
+    const followingSet = new Set(this.following);
+    if(analysisMode==='all'){
+      return this.following.filter(u => !followersSet.has(u));
+    } else {
+      return this.followers.filter(u => !followingSet.has(u));
+    }
+  },
+  get mutual() {
+    const followersSet = new Set(this.followers);
+    const followingSet = new Set(this.following);
+    if(analysisMode==='all'){
+      return this.following.filter(u => followersSet.has(u));
+    } else {
+      return this.followers.filter(u => followingSet.has(u));
+    }
+  }
+};
+
+function T(k){return LANGS[currentLang]?.t[k]||LANGS.es.t[k]||k;}
+
+// ══════════════════════════════════════════════════════
+// LANGUAGE
+// ══════════════════════════════════════════════════════
+function toggleLangDropdown(e){e.stopPropagation();document.getElementById('langDropdown').classList.toggle('open');}
+
+function setLang(lang,e){
+  if(e)e.stopPropagation();
+  currentLang=lang;
+  localStorage.setItem('ig_lang',lang);
+  document.getElementById('langDropdown').classList.remove('open');
+  applyLang();
+}
+
+function applyLang(){
+  const l=LANGS[currentLang];
+  document.getElementById('langFlag').textContent=l.flag;
+  document.getElementById('langCode').textContent=l.code;
+  document.documentElement.lang=currentLang;
+  document.body.classList.toggle('rtl',l.dir==='rtl');
+  document.querySelectorAll('.lang-option').forEach(o=>o.classList.toggle('active',o.dataset.lang===currentLang));
+
+  // Static upload page
+  document.getElementById('heroTitle').innerHTML=T('heroTitle');
+  document.getElementById('heroSub').textContent=T('heroSub');
+  document.getElementById('privacyStrong').textContent=T('privacyStrong');
+  document.getElementById('privacySub').textContent=T('privacySub');
+  document.getElementById('stepsLabel').textContent=T('stepsLabel');
+  document.getElementById('step1').innerHTML=T('step1');
+  document.getElementById('step2').innerHTML=T('step2');
+  document.getElementById('step3').innerHTML=T('step3');
+  document.getElementById('step4').innerHTML=T('step4');
+  document.getElementById('modeLabel').textContent=T('modeLabel');
+  document.getElementById('modeAllTitle').textContent=T('modeAllTitle');
+  document.getElementById('modeAllDesc').textContent=T('modeAllDesc');
+  document.getElementById('modePeriodTitle').textContent=T('modePeriodTitle');
+  document.getElementById('modePeriodDesc').textContent=T('modePeriodDesc');
+  document.getElementById('uploadTitle').textContent=T('uploadTitle');
+  document.getElementById('uploadDesc').innerHTML=T('uploadDesc');
+  document.getElementById('uploadBtn').textContent=T('uploadBtn');
+  document.getElementById('analyzingText').textContent=T('analyzing');
+  // Stats labels
+  document.getElementById('labelNotFollow').textContent=T('statNotFollow');
+  document.getElementById('labelFollowers').textContent=T('statFollowers');
+  document.getElementById('labelFollowing').textContent=T('statFollowing');
+  document.getElementById('labelMutual').textContent=T('statMutual');
+  // Ratio
+  document.getElementById('ratioLabel').textContent=T('ratioLabel');
+  document.getElementById('ratioLabelLocked').textContent=T('ratioLabel');
+  document.getElementById('ratioLockedMsg').textContent=T('ratioLockedMsg');
+  // History
+  document.getElementById('historyLabel').textContent=T('historyLabel');
+  // Search
+  document.getElementById('searchBar').placeholder=T('searchPlaceholder');
+  // Tabs
+  document.getElementById('tabNotFollowing').textContent=T('tabNotFollowing');
+  document.getElementById('tabMutual').textContent=T('tabMutual');
+  document.getElementById('tabFollowers').textContent=T('tabFollowers');
+  document.getElementById('tabFollowing').textContent=T('tabFollowing');
+  document.getElementById('tabBlacklist').textContent=T('tabBlacklist');
+  renderBlacklistBadge();
+  // Buttons
+  document.getElementById('exportTxtBtn').textContent=T('exportTxt');
+  document.getElementById('exportCsvBtn').textContent=T('exportCsv');
+  document.getElementById('resetBtn').textContent=T('resetBtn');
+  document.getElementById('clearHistBtn').textContent=T('clearHistBtn');
+  // Modal
+  document.getElementById('blacklistModalTitle').textContent=T('blacklistModalTitle');
+  document.getElementById('blacklistModalDesc').textContent=T('blacklistModalDesc');
+  // Precision note
+  document.getElementById('precisionNote').innerHTML=T('precisionNote');
+
+  // Re-render dynamic content if results are visible
+  if(document.getElementById('results').style.display!=='none'){
+    const tabKey='tab'+currentTab.charAt(0).toUpperCase()+currentTab.slice(1);
+    document.getElementById('listTitle').textContent=T(tabKey).replace(/^[^\s]+\s/,'');
+    renderHistory();
+    renderList(currentList);
+  }
+}
+
+document.addEventListener('click',()=>{
+  document.getElementById('langDropdown').classList.remove('open');
+  closeAllPopups();
+});
+
+// ══════════════════════════════════════════════════════
+// THEME
+// ══════════════════════════════════════════════════════
+let theme=localStorage.getItem('ig_theme')||'dark';
+applyTheme(theme);
+function applyTheme(t){theme=t;document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';localStorage.setItem('ig_theme',t);}
+document.getElementById('themeBtn').addEventListener('click',()=>applyTheme(theme==='dark'?'light':'dark'));
+
+// ══════════════════════════════════════════════════════
+// MODE
+// ══════════════════════════════════════════════════════
+function selectMode(mode){
+  analysisMode=mode;
+  document.getElementById('modeAll').classList.toggle('selected',mode==='all');
+  document.getElementById('modePeriod').classList.toggle('selected',mode==='period');
+}
+
+// ══════════════════════════════════════════════════════
+// UPLOAD & READERS
+// ══════════════════════════════════════════════════════
+document.getElementById('uploadBtn').addEventListener('click',e=>{e.preventDefault();document.getElementById('fileInput').click();});
+document.getElementById('fileInput').addEventListener('change',e=>{const f=Array.from(e.target.files);if(f.length)processFiles(f);});
+const uploadCard=document.getElementById('uploadCard');
+uploadCard.addEventListener('dragover',e=>{e.preventDefault();uploadCard.classList.add('drag-over');});
+uploadCard.addEventListener('dragleave',()=>uploadCard.classList.remove('drag-over'));
+uploadCard.addEventListener('drop',e=>{e.preventDefault();uploadCard.classList.remove('drag-over');processFiles(Array.from(e.dataTransfer.files));});
+
+function processFiles(files){
+  hideError();
+  if(!files.length)return showError(T('errNoFile'));
+  if(files.length>2)return showError(T('errTooMany'));
+  
+  for(const f of files){
+    if(!f.name.toLowerCase().endsWith('.json')){
+      return showError(T('errRead')+f.name+' — '+({es:'debe ser .json',en:'must be .json','en-US':'must be .json','en-GB':'must be .json',pt:'deve ser .json',fr:'doit être .json',de:'muss .json sein',ja:'.jsonが必要',hi:'.json होना चाहिए',ar:'يجب أن يكون .json',id:'harus .json',ru:'должен быть .json'}[currentLang]||'must be .json'));
+    }
+  }
+  showLoading(true);
+  let fRaw=null,gRaw=null,done=0;
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const json=JSON.parse(ev.target.result);
+        const users=getUsers(json);
+        if(!Array.isArray(users)||users.length===0){
+          if(!Array.isArray(json)&&!json.relationships_following&&!json.relationships_followers&&!Object.values(json||{}).some(v=>Array.isArray(v))){
+            showLoading(false);showError(T('errRead')+file.name+' — formato no reconocido');return;
+          }
+        }
+        const n=file.name.toLowerCase();
+        if(n.includes('follower'))fRaw=json;
+        else if(n.includes('following'))gRaw=json;
+        else{if(!fRaw)fRaw=json;else gRaw=json;}
+      }catch(e){showLoading(false);showError(T('errRead')+file.name);return;}
+      done++;if(done===files.length)buildResults(fRaw,gRaw);
+    };reader.readAsText(file);
+  });
+}
+
+// Highly robust extractor prioritizing pure values over displays
+function getUsers(json){
+  if(!json)return[];
+  let arr=json;
+  if(!Array.isArray(json))arr=json.relationships_following || json.relationships_followers || Object.values(json).find(v=>Array.isArray(v))||[];
+  return arr.map(i=>{
+    const val = i?.string_list_data?.[0]?.value || i?.value || i?.title;
+    return typeof val === 'string' ? val.trim() : null;
+  }).filter(Boolean);
+}
+
+// ══════════════════════════════════════════════════════
+// BUILD RESULTS
+// ══════════════════════════════════════════════════════
+function buildResults(fRaw,gRaw){
+  setTimeout(()=>{
+    const followers=new Set(getUsers(fRaw));
+    const following=new Set(getUsers(gRaw));
+    
+    // Feed raw state database
+    state.rawFollowers=[...followers];
+    state.rawFollowing=[...following];
+    
+    updateStats();updateRatio();
+    
+    // Save state history (independent of real-time blacklist filtering to avoid math artifacts)
+    saveHistory({
+      followers:[...followers],
+      following:[...following],
+      notFollowing: analysisMode==='all'?[...following].filter(u=>!followers.has(u)):[...followers].filter(u=>!following.has(u)),
+      mutual: analysisMode==='all'?[...following].filter(u=>followers.has(u)):[...followers].filter(u=>following.has(u))
+    });
+    
+    renderHistory();renderBlacklistBadge();
+    showLoading(false);
+    document.getElementById('results').style.display='block';
+    
+    saveSession();
+    activateTab('notFollowing');
+    showToast(T('toastDone'));
+  },500);
+}
+
+function updateStats(){
+  document.getElementById('statFollowers').textContent=state.followers.length;
+  document.getElementById('statFollowing').textContent=state.following.length;
+  document.getElementById('statNotFollow').textContent=state.notFollowing.length;
+  document.getElementById('statMutual').textContent=state.mutual.length;
+}
+
+// ══════════════════════════════════════════════════════
+// RATIO
+// ══════════════════════════════════════════════════════
+function updateRatio(){
+  const ratioWrap=document.getElementById('ratioWrap');
+  const ratioLocked=document.getElementById('ratioLocked');
+  if(analysisMode==='all'){
+    const ratio=state.following.length>0?Math.round((state.followers.length/state.following.length)*100):0;
+    savedRatio={ratio,followers:state.followers.length,following:state.following.length,date:new Date().toLocaleDateString()};
+    localStorage.setItem('ig_ratio',JSON.stringify(savedRatio));
+    document.getElementById('ratioText').textContent=ratio+'%';
+    setTimeout(()=>{document.getElementById('ratioFill').style.width=Math.min(ratio,100)+'%';},100);
+    ratioWrap.style.display='block';ratioLocked.style.display='none';
+  }else{
+    ratioWrap.style.display='none';ratioLocked.style.display='block';
+    if(savedRatio){
+      document.getElementById('ratioSaved').textContent=savedRatio.ratio+'%';
+      setTimeout(()=>{document.getElementById('ratioFillSaved').style.width=Math.min(savedRatio.ratio,100)+'%';},100);
+    }else{document.getElementById('ratioSaved').textContent='—';document.getElementById('ratioFillSaved').style.width='0%';}
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// HISTORY
+// ══════════════════════════════════════════════════════
+function saveHistory(s){
+  const prevSameMode=appHistory.find(h=>h.mode===analysisMode);
+  let gained=0,lost=0;
+  if(prevSameMode&&analysisMode==='all'){
+    const prevSet=new Set(prevSameMode.users.notFollowing||[]);const currSet=new Set(s.notFollowing);
+    lost=[...currSet].filter(u=>!prevSet.has(u)).length;gained=[...prevSet].filter(u=>!currSet.has(u)).length;
+  }
+  const entry={date:new Date().toLocaleDateString(),time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),timestamp:Date.now(),mode:analysisMode,notFollowing:s.notFollowing.length,mutual:s.mutual.length,followers:s.followers.length,following:s.following.length,gained,lost,users:{notFollowing:[...s.notFollowing],mutual:[...s.mutual],followers:[...s.followers],following:[...s.following]}};
+  appHistory.unshift(entry);
+  if(appHistory.length>15)appHistory=appHistory.slice(0,15);
+  localStorage.setItem('ig_history',JSON.stringify(appHistory));
+}
+
+function renderHistory(){
+  if(appHistory.length<1){document.getElementById('historySection').style.display='none';return;}
+  document.getElementById('historySection').style.display='block';
+  const strip=document.getElementById('historyStrip');
+  strip.innerHTML=appHistory.map((h,i)=>{
+    const prev=appHistory.find((x,xi)=>xi>i&&x.mode===h.mode);
+    const diff=prev?h.notFollowing-prev.notFollowing:null;
+    let diffStr,diffCls;
+    if(diff===null){diffStr=T('diffFirst');diffCls='neutral';}
+    else if(diff>0){diffStr=`-${diff} ${T('diffLost')}`;diffCls='lost';}
+    else if(diff<0){diffStr=`+${Math.abs(diff)} ${T('diffGained')}`;diffCls='gained';}
+    else{diffStr=T('diffNone');diffCls='neutral';}
+    const modeIcon=h.mode==='all'?'🌐':'📅';
+    const modeStr=h.mode==='all'?T('modeFullHistory'):T('modePeriodShort');
+    return `<div class="history-chip" id="hchip${i}" onclick="togglePopoverEl(${i},event)">
+      <span class="hdate">${modeIcon} ${h.date} ${h.time||''}</span>
+      <span class="hdiff ${diffCls}">${diffStr}</span>
+      <div class="history-popover" id="hpop${i}">
+        <h5>📊 ${T('popDetail')} ${h.date} ${h.time||''}</h5>
+        <div class="popover-row"><span>${T('popMode')}</span><span>${modeStr}</span></div>
+        <div class="popover-row"><span>${T('popNotFollow')}</span><span class="red">${h.notFollowing}</span></div>
+        <div class="popover-row"><span>${T('popFollowers')}</span><span class="green">${h.followers}</span></div>
+        <div class="popover-row"><span>${T('popFollowing')}</span><span>${h.following}</span></div>
+        <div class="popover-row"><span>${T('popMutual')}</span><span>${h.mutual}</span></div>
+        ${diff!==null&&diff>0?`<div class="popover-row"><span>${T('popLost')}</span><span class="red">-${diff}</span></div>`:''}
+        ${diff!==null&&diff<0?`<div class="popover-row"><span>${T('popGained')}</span><span class="green">+${Math.abs(diff)}</span></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function togglePopoverEl(i,e){
+  e.stopPropagation();
+  openHistPopup(i,e);
+}
+
+function clearHistory(){
+  if(!confirm(T('confirmClear')))return;
+  appHistory=[];localStorage.removeItem('ig_history');
+  document.getElementById('historySection').style.display='none';
+  showToast(T('toastHistCleared'));
+}
+
+// ══════════════════════════════════════════════════════
+// CLOSE ALL POPUPS
+// ══════════════════════════════════════════════════════
+function closeAllPopups(){
+  const rp=document.getElementById('ratioPopup');
+  rp.classList.remove('open');
+  rp.style.transform='';
+  document.getElementById('histPopup').classList.remove('open');
+  document.getElementById('popupOverlay').classList.remove('open');
+  if(openPopover){openPopover.classList.remove('open');openPopover=null;}
+}
+
+// ══════════════════════════════════════════════════════
+// RATIO POPUP (100% Internationalized)
+// ══════════════════════════════════════════════════════
+function openRatioPopup(e){
+  e.stopPropagation();
+  const isLocked = analysisMode !== 'all';
+  const ratio = savedRatio ? savedRatio.ratio : 0;
+
+  document.getElementById('rp_title').textContent = '📊 ' + T('ratioLabel');
+  document.getElementById('rp_value').textContent = ratio !== null ? ratio + '%' : '—';
+  document.getElementById('rp_value').style.color = ratio===null?'var(--muted)':ratio>=100?'var(--green)':ratio>=50?'var(--accent)':'var(--red)';
+
+  const explain1 = {
+    es:'El ratio muestra la relación entre <strong>cuántas personas te siguen</strong> y <strong>cuántas sigues tú</strong>. Si sigues a 100 personas y 150 te siguen a ti, tu ratio es 150%.',
+    'en-US':'The ratio shows the relationship between <strong>how many people follow you</strong> and <strong>how many you follow</strong>. If you follow 100 people and 150 follow you, your ratio is 150%.',
+    'en-GB':'The ratio shows the relationship between <strong>how many people follow you</strong> and <strong>how many you follow</strong>. If you follow 100 people and 150 follow you, your ratio is 150%.',
+    pt:'O ratio mostra a relação entre <strong>quantas pessoas te seguem</strong> e <strong>quantas você segue</strong>. Se você segue 100 pessoas e 150 te seguem, seu ratio é 150%.',
+    fr:'Le ratio montre la relation entre <strong>combien de personnes te suivent</strong> et <strong>combien tu suis</strong>. Si tu suis 100 personnes et que 150 te suivent, ton ratio est de 150 %.',
+    de:'Das Verhältnis zeigt die Beziehung zwischen <strong>wie vielen Personen dir folgen</strong> und <strong>wie vielen du folgst</strong>. Wenn du 100 Personen folgst und 150 dir folgen, beträgt dein Verhältnis 150 %.',
+    ja:'比率は<strong>あなたをフォローしている人数</strong>と<strong>あなたがフォローしている人数</strong>の関係を示します。100人をフォローして150人がフォローバックすれば比率は150%です。',
+    hi:'रेशियो यह दिखाता है कि <strong>कितने लोग आपको फॉलो करते हैं</strong> और <strong>आप कितनों को फॉलो करते हैं</strong>। अगर आप 100 को फॉलो करते हैं और 150 आपको, तो रेशियो 150% है।',
+    ar:'تُظهر النسبة العلاقة بين <strong>عدد من يتابعونك</strong> و<strong>عدد من تتابعهم</strong>. إذا تابعت 100 شخص وتابعك 150، فنسبتك 150٪.',
+    id:'Rasio menunjukkan hubungan antara <strong>berapa banyak orang yang mengikutimu</strong> dan <strong>berapa banyak yang kamu ikuti</strong>. Jika kamu mengikuti 100 orang dan 150 mengikutimu, rasiomu adalah 150%.',
+    ru:'Соотношение показывает связь между <strong>тем, сколько людей подписано на тебя</strong>, и <strong>тем, на сколько подписан ты сам</strong>. Если ты подписан на 100 человек, а 150 подписаны на тебя, твоё соотношение — 150%.'
+  };
+  const explain2 = {
+    es:'Un ratio <strong>por encima de 100%</strong> significa que te siguen más personas de las que sigues tú. Por <strong>debajo de 100%</strong> sigues a más gente de la que te sigue a ti.',
+    'en-US':'A ratio <strong>above 100%</strong> means more people follow you than you follow. <strong>Below 100%</strong> means you follow more people than follow you.',
+    'en-GB':'A ratio <strong>above 100%</strong> means more people follow you than you follow. <strong>Below 100%</strong> means you follow more people than follow you.',
+    pt:'Um ratio <strong>acima de 100%</strong> significa que mais pessoas te seguem do que você segue. <strong>Abaixo de 100%</strong> significa que você segue mais do que te seguem.',
+    fr:'Un ratio <strong>supérieur à 100 %</strong> signifie que plus de personnes te suivent que tu n\'en suis. <strong>En dessous de 100 %</strong>, tu suis plus de monde que tu n\'en as.',
+    de:'Ein Verhältnis <strong>über 100 %</strong> bedeutet, dass dir mehr Leute folgen als du folgst. <strong>Unter 100 %</strong> folgst du mehr Leuten als dir folgen.',
+    ja:'<strong>100%以上</strong>はあなたをフォローする人数があなたがフォローする人数より多いことを意味します。<strong>100%未満</strong>はその逆です。',
+    hi:'<strong>100% से ऊपर</strong> का मतलब है कि आपको फॉलो करने वाले ज्यादा हैं। <strong>100% से नीचे</strong> मतलब आप ज्यादा फॉलो करते हैं।',
+    ar:'نسبة <strong>تزيد عن 100٪</strong> تعني أن من يتابعونك أكثر ممن تتابعهم. <strong>أقل من 100٪</strong> يعني العكس.',
+    id:'Rasio <strong>di atas 100%</strong> berarti lebih banyak orang mengikutimu daripada yang kamu ikuti. <strong>Di bawah 100%</strong> berarti sebaliknya.',
+    ru:'Соотношение <strong>выше 100%</strong> означает, что на тебя подписано больше людей, чем ты сам. <strong>Ниже 100%</strong> — наоборот.'
+  };
+  document.getElementById('rp_explain1').innerHTML = explain1[currentLang]||explain1['en-US'];
+  document.getElementById('rp_explain2').innerHTML = explain2[currentLang]||explain2['en-US'];
+  document.getElementById('rp_formula').textContent = T('ratioFormula');
+
+  const scaleLabels = {
+    es:['Bajo','Equilibrado','Alto'], 'en-US':['Low','Balanced','High'], 'en-GB':['Low','Balanced','High'],
+    pt:['Baixo','Equilibrado','Alto'], fr:['Bas','Équilibré','Haut'], de:['Niedrig','Ausgeglichen','Hoch'],
+    ja:['低い','バランス','高い'], hi:['कम','संतुलित','अधिक'], ar:['منخفض','متوازن','مرتفع'], id:['Rendah','Seimbang','Tinggi'], ru:['Низкий','Сбалансированный','Высокий']
+  };
+  const sl = scaleLabels[currentLang]||scaleLabels['en-US'];
+  document.getElementById('rp_scale').innerHTML=`
+    <div class="ratio-scale-item"><div class="rs-val" style="color:var(--red)">< 50%</div><div class="rs-label">${sl[0]}</div></div>
+    <div class="ratio-scale-item"><div class="rs-val" style="color:var(--accent)">50–100%</div><div class="rs-label">${sl[1]}</div></div>
+    <div class="ratio-scale-item"><div class="rs-val" style="color:var(--green)">> 100%</div><div class="rs-label">${sl[2]}</div></div>
+  `;
+
+  document.getElementById('rp_sublabel').textContent = savedRatio ? `${savedRatio.followers} / ${savedRatio.following}` : '';
+  setTimeout(()=>{document.getElementById('rp_fill').style.width=Math.min(ratio,150)/1.5+'%';},50);
+  document.getElementById('rp_fill').style.background = ratio>=100?'var(--green)':ratio>=50?'var(--accent)':'var(--red)';
+
+  const lockedEl = document.getElementById('rp_locked');
+  if(isLocked){
+    lockedEl.style.display='block';
+    lockedEl.textContent = T('ratioLockedMsg');
+  }else{
+    lockedEl.style.display='none';
+  }
+
+  document.getElementById('ratioPopup').classList.add('open');
+  document.getElementById('popupOverlay').classList.add('open');
+}
+
+// Swipe gesture algorithm for closing popups
+(function initRatioSwipe(){
+  const pop=document.getElementById('ratioPopup');
+  const grab=document.getElementById('ratioPopupGrab');
+  if(!pop||!grab)return;
+  let startY=0,curY=0,dragging=false;
+  const onStart=(y)=>{startY=y;curY=0;dragging=true;pop.classList.add('dragging');};
+  const onMove=(y)=>{
+    if(!dragging)return;
+    curY=Math.max(0,y-startY);
+    pop.style.transform='translateY('+curY+'px)';
+  };
+  const onEnd=()=>{
+    if(!dragging)return;
+    dragging=false;
+    pop.classList.remove('dragging');
+    if(curY>90){
+      pop.style.transform='translateY(100%)';
+      setTimeout(()=>{pop.style.transform='';closeAllPopups();},220);
+    }else{
+      pop.style.transform='';
+    }
+  };
+  grab.addEventListener('touchstart',e=>onStart(e.touches[0].clientY),{passive:true});
+  grab.addEventListener('touchmove',e=>{onMove(e.touches[0].clientY);},{passive:true});
+  grab.addEventListener('touchend',onEnd);
+  grab.addEventListener('touchcancel',onEnd);
+  grab.addEventListener('mousedown',e=>{onStart(e.clientY);
+    const mm=ev=>onMove(ev.clientY);
+    const mu=()=>{document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);onEnd();};
+    document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
+  });
+})();
+
+// ══════════════════════════════════════════════════════
+// HISTORY COMPARISON POPUP
+// ══════════════════════════════════════════════════════
+function openHistPopup(idx, e){
+  e.stopPropagation();
+  closeAllPopups();
+  const h = appHistory[idx];
+  if(!h) return;
+  const prev = appHistory.find((x,xi)=>xi>idx && x.mode===h.mode);
+
+  const modeStr = h.mode==='all'?T('modeFullHistory'):T('modePeriodShort');
+  const modeIcon = h.mode==='all'?'🌐':'📅';
+  document.getElementById('hp_title').textContent = `📊 ${h.date} ${h.time||''} · ${modeStr}`;
+
+  const maxVal = Math.max(h.followers, h.following, h.notFollowing, h.mutual, 1);
+  const bar = (val, color) => `<div class="hist-compare-bar" style="width:${Math.round(val/maxVal*100)}%;background:${color}"></div>`;
+
+  const labels = {
+    followers: T('popFollowers'), following: T('popFollowing'),
+    notFollowing: T('popNotFollow'), mutual: T('popMutual')
+  };
+  const colors = { followers:'var(--green)', following:'var(--accent3)', notFollowing:'var(--red)', mutual:'var(--accent)' };
+
+  let bars = ['followers','following','notFollowing','mutual'].map(k=>`
+    <div class="hist-compare-row">
+      <div class="hist-compare-label">${labels[k]}</div>
+      <div class="hist-compare-bar-wrap">${bar(h[k],colors[k])}</div>
+      <div class="hist-compare-val" style="color:${colors[k]}">${h[k]}</div>
+    </div>`).join('');
+
+  let deltas = '';
+  if(prev){
+    const diffNF = h.notFollowing - prev.notFollowing;
+    const diffF  = h.followers - prev.followers;
+    const diffFg = h.following - prev.following;
+    const diffM  = h.mutual - prev.mutual;
+    const fmt = (n,reverse=false) => {
+      const good = reverse ? n<0 : n>0;
+      const cls = n===0?'hist-delta-neu':good?'hist-delta-pos':'hist-delta-neg';
+      const sign = n>0?'+':'';
+      return `<span class="${cls}">${sign}${n}</span>`;
+    };
+    const vsLabel = {
+      es:'vs análisis anterior','en-US':'vs previous analysis','en-GB':'vs previous analysis',
+      pt:'vs análise anterior',fr:'vs analyse précédente',de:'vs vorherige Analyse',
+      ja:'前回比',hi:'पिछले विश्लेषण से',ar:'مقارنة بالتحليل السابق',id:'vs analisis sebelumnya',ru:'по сравнению с предыдущим'
+    };
+    deltas = `
+      <div style="background:var(--card2);border-radius:12px;padding:12px 14px;margin-top:16px">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">${vsLabel[currentLang]||vsLabel['en-US']} (${prev.date})</div>
+        <div class="hist-delta-row"><span>${T('popFollowers')}</span>${fmt(diffF)}</div>
+        <div class="hist-delta-row"><span>${T('popFollowing')}</span>${fmt(diffFg)}</div>
+        <div class="hist-delta-row"><span>${T('popNotFollow')}</span>${fmt(diffNF,true)}</div>
+        <div class="hist-delta-row"><span>${T('popMutual')}</span>${fmt(diffM)}</div>
+      </div>`;
+  }
+
+  document.getElementById('hp_body').innerHTML = bars + deltas;
+  setTimeout(()=>{
+    document.querySelectorAll('.hist-compare-bar').forEach(b=>{
+      const w=b.style.width; b.style.width='0'; setTimeout(()=>{b.style.width=w;b.style.transition='width .7s cubic-bezier(.4,0,.2,1)';},30);
+    });
+  },10);
+
+  document.getElementById('histPopup').classList.add('open');
+  document.getElementById('popupOverlay').classList.add('open');
+}
+
+// ══════════════════════════════════════════════════════
+// BLACKLIST (Clean non-destructive architecture)
+// ══════════════════════════════════════════════════════
+function toggleBlacklist(username){
+  if(blacklist.has(username)){
+    blacklist.delete(username);
+    showToast('✅ @'+username+' '+T('toastRemoved'));
+  }else{
+    blacklist.add(username);
+    showToast('🚫 @'+username+' '+T('toastAdded'));
+  }
+  localStorage.setItem('ig_blacklist',JSON.stringify([...blacklist]));
+  renderBlacklistBadge();
+  updateStats();
+  
+  currentList=currentTab==='blacklist'?[...blacklist]:(state[currentTab]||[]);
+  document.getElementById('listCount').textContent=currentList.length;
+  renderList(currentList);
+  
+  if(document.getElementById('blacklistModal').classList.contains('open')){
+    const c=document.getElementById('blacklistContent');
+    if(!blacklist.size){c.innerHTML=`<div class="empty"><span>✅</span><p>${T('blacklistEmpty')}</p></div>`;}
+    else{c.innerHTML=[...blacklist].map(u=>`<div class="user-item"><div class="avatar" style="background:${avatarColor(u)}">${u[0].toUpperCase()}</div><div class="user-info"><div class="username">@${u}</div></div><button class="btn-block blocked" onclick="toggleBlacklist('${u}')">${T('blacklistRemove')}</button></div>`).join('');}
+  }
+}
+
+function renderBlacklistBadge(){
+  const tabEl=document.getElementById('tabBlacklist');
+  const base=T('tabBlacklist');
+  tabEl.textContent = blacklist.size>0 ? `${base} (${blacklist.size})` : base;
+}
+
+function openBlacklist(){
+  document.getElementById('blacklistModal').classList.add('open');
+  const c=document.getElementById('blacklistContent');
+  if(!blacklist.size){c.innerHTML=`<div class="empty"><span>✅</span><p>${T('blacklistEmpty')}</p></div>`;return;}
+  c.innerHTML=[...blacklist].map(u=>`<div class="user-item"><div class="avatar" style="background:${avatarColor(u)}">${u[0].toUpperCase()}</div><div class="user-info"><div class="username">@${u}</div></div><button class="btn-block blocked" onclick="toggleBlacklist('${u}')">${T('blacklistRemove')}</button></div>`).join('');
+}
+
+function closeBlacklist(e){if(!e||e.target===document.getElementById('blacklistModal'))document.getElementById('blacklistModal').classList.remove('open');}
+
+// ══════════════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════════════
+document.getElementById('tabsContainer').addEventListener('click',e=>{const t=e.target.closest('.tab');if(t)activateTab(t.dataset.tab);});
+
+function activateTab(tab){
+  currentTab=tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  currentList=tab==='blacklist'?[...blacklist]:(state[tab]||[]);
+  const tabKey='tab'+tab.charAt(0).toUpperCase()+tab.slice(1);
+  document.getElementById('listTitle').textContent=T(tabKey).replace(/^[^\s]+\s/,'');
+  document.getElementById('listCount').textContent=currentList.length;
+  document.getElementById('precisionNote').classList.toggle('show',tab==='notFollowing');
+  document.getElementById('searchBar').value='';
+  sortAZ=false;document.getElementById('sortBtn').classList.remove('active');document.getElementById('sortBtn').textContent='A→Z';
+  renderList(currentList);
+  saveSession();
+}
+
+// ══════════════════════════════════════════════════════
+// SEARCH & SORT
+// ══════════════════════════════════════════════════════
+document.getElementById('searchBar').addEventListener('input',e=>{
+  const q=e.target.value.toLowerCase().trim();
+  let list=currentTab==='blacklist'?[...blacklist]:(state[currentTab]||[]);
+  if(q)list=list.filter(u=>u.toLowerCase().includes(q));
+  if(sortAZ)list=[...list].sort((a,b)=>a.localeCompare(b));
+  renderList(list);
+});
+
+function toggleSort(){
+  sortAZ=!sortAZ;
+  document.getElementById('sortBtn').textContent=sortAZ?'Z→A':'A→Z';
+  document.getElementById('sortBtn').classList.toggle('active',sortAZ);
+  const q=document.getElementById('searchBar').value.toLowerCase().trim();
+  let list=currentTab==='blacklist'?[...blacklist]:(state[currentTab]||[]);
+  if(q)list=list.filter(u=>u.toLowerCase().includes(q));
+  list=sortAZ?[...list].sort((a,b)=>a.localeCompare(b)):[...list].sort((a,b)=>b.localeCompare(a));
+  renderList(list);
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════
+function avatarColor(u){return AVATAR_COLORS[u.charCodeAt(0)%AVATAR_COLORS.length];}
+
+function renderList(list){
+  const container=document.getElementById('userList');
+  if(!list.length){container.innerHTML=`<div class="empty"><span>🎉</span><p>${T('emptyList')}</p></div>`;return;}
+  container.innerHTML=list.slice(0,200).map((u,i)=>{
+    const isBlocked=blacklist.has(u);
+    return `<div class="user-item" style="animation-delay:${Math.min(i*0.02,0.4)}s">
+      <div class="avatar" style="background:${avatarColor(u)}">${u[0].toUpperCase()}</div>
+      <div class="user-info"><div class="username">@${u}</div><div class="user-sub">instagram.com/${u}</div></div>
+      <div class="user-actions">
+        <a href="https://instagram.com/${u}" target="_blank" class="btn-ig">🔗</a>
+        <button class="btn-block ${isBlocked?'blocked':''}" onclick="toggleBlacklist('${u}')">🚫</button>
+      </div>
+    </div>`;
+  }).join('');
+  if(list.length>200)container.innerHTML+=`<div class="empty"><p>${T('showingOf')} ${list.length}.</p></div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// EXPORT
+// ══════════════════════════════════════════════════════
+function exportList(format){
+  const list=currentTab==='blacklist'?[...blacklist]:currentList;
+  if(!list.length){showToast(T('toastEmpty'));return;}
+  let content,filename,mime;
+  const tabKey='tab'+currentTab.charAt(0).toUpperCase()+currentTab.slice(1);
+  const tabName=T(tabKey).replace(/^[^\s]+\s/,'');
+  if(format==='txt'){
+    content=`IGTracker — ${tabName}\n${new Date().toLocaleDateString()}\nTotal: ${list.length}\n\n`+list.map(u=>`@${u}\nhttps://instagram.com/${u}`).join('\n\n');
+    filename=`ig_${currentTab}_${Date.now()}.txt`;mime='text/plain';
+  }else{
+    content=`Usuario,URL\n`+list.map(u=>`${u},https://instagram.com/${u}`).join('\n');
+    filename=`ig_${currentTab}_${Date.now()}.csv`;mime='text/csv';
+  }
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:mime}));a.download=filename;a.click();
+  showToast(T('toastExport')+' '+format.toUpperCase());
+}
+
+// ══════════════════════════════════════════════════════
+// RESET
+// ══════════════════════════════════════════════════════
+function resetApp(){
+  sessionStorage.removeItem('ig_session');
+  document.getElementById('results').style.display='none';
+  document.getElementById('uploadView').style.display='block';
+  document.getElementById('fileInput').value='';
+  state.rawFollowers=[];
+  state.rawFollowing=[];
+}
+
+// ══════════════════════════════════════════════════════
+// SESSION PERSISTENCE (Stable & Backwards-Compatible)
+// ══════════════════════════════════════════════════════
+function saveSession(){
+  try{
+    sessionStorage.setItem('ig_session',JSON.stringify({
+      state:{
+        rawFollowers:state.rawFollowers,
+        rawFollowing:state.rawFollowing
+      },
+      analysisMode,currentTab
+    }));
+  }catch(e){}
+}
+
+function restoreSession(){
+  try{
+    const raw=sessionStorage.getItem('ig_session');
+    if(!raw)return false;
+    const s=JSON.parse(raw);
+    if(!s||!s.state||(!s.state.rawFollowers && !s.state.followers))return false;
+    
+    state.rawFollowers = s.state.rawFollowers || s.state.followers || [];
+    state.rawFollowing = s.state.rawFollowing || s.state.following || [];
+    analysisMode=s.analysisMode||'all';
+    
+    document.getElementById('modeAll').classList.toggle('selected',analysisMode==='all');
+    document.getElementById('modePeriod').classList.toggle('selected',analysisMode==='period');
+    
+    updateStats();updateRatio();renderBlacklistBadge();
+    document.getElementById('results').style.display='block';
+    document.getElementById('uploadView').style.display='none';
+    activateTab(s.currentTab||'notFollowing');
+    if(appHistory.length>=1)renderHistory();
+    return true;
+  }catch(e){return false;}
+}
+
+// ══════════════════════════════════════════════════════
+// LOADING & CONTROLS
+// ══════════════════════════════════════════════════════
+function showLoading(show){
+  document.getElementById('loading').style.display=show?'block':'none';
+  if(show){
+    document.getElementById('uploadView').style.display='none';
+  }
+}
+function showError(msg){document.getElementById('uploadView').style.display='block';document.getElementById('loading').style.display='none';document.getElementById('errorBox').style.display='block';document.getElementById('errorMsg').textContent=msg;}
+function hideError(){document.getElementById('errorBox').style.display='none';}
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+applyLang();
+renderBlacklistBadge();
+if(appHistory.length>=1)renderHistory();
+restoreSession();
+</script>
+
+</body>
+</html>
